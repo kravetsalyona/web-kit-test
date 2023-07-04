@@ -1,25 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
+import Title from './components/Title';
+import logo from './logo.svg';
+import { Component } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  componentDidMount() {
+		if (window.webkit) {
+			window.webkit.messageHandlers.jsHandler.postMessage("Did finished")
+		} else {
+			console.log("webkit or something undefined")
+		}
+	}
+	render() {
+		return (
+			<div>
+				<Title />
+        <img id="img" src={logo} className="App-logo" alt="logo" />
+			</div>
+		)
+	}
 }
 
 export default App;
+
