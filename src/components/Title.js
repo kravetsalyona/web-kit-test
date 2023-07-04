@@ -1,6 +1,5 @@
-
 export default function Title(){
-    const title = 'Баллы Луны';
+  const title = 'Баллы Луны';
   const currentBalance = 'Текущий баланс';
   const countOfPoints = 100;
 return (<>
