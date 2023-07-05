@@ -8,7 +8,7 @@ export default class Picture extends Component {
         const img = document.getElementById('img');
 
         this.loaderBefore()
-        alert(`Image size: ${img.offsetWidth}x${img.offsetHeight}`)
+        // alert(`Image size: ${img.offsetWidth}x${img.offsetHeight}`)
         window.addEventListener('load', this.loader)
         
     }
@@ -20,7 +20,7 @@ export default class Picture extends Component {
 
         // console.log('Страница загружена');
         // const size = `Размер изображения: ${img.offsetWidth}x${img.offsetHeight}`;
-        alert(`Image size: ${img.offsetWidth}x${img.offsetHeight}`)
+        // alert(`Image size: ${img.offsetWidth}x${img.offsetHeight}`)
         if (window.webkit) {
             window.webkit.messageHandlers.jsHandler.postMessage(`Image size: ${img.offsetWidth}x${img.offsetHeight}`)
         } else {
