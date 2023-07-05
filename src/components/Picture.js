@@ -5,14 +5,8 @@ import logo from '../logo.svg';
 export default class Picture extends Component {
     
     componentDidMount(){
-        const img = document.getElementById('img');
-        if (window.webkit) {
-            window.webkit.messageHandlers.jsHandler.postMessage(`Image size: ${img.offsetWidth}x${img.offsetHeight}`)
-        } else {
-            console.log("webkit or something undefined")
-        }
-        alert(`Размер изображения: ${img.offsetWidth}x${img.offsetHeight}`);
-        
+        this.loader()
+       
         window.addEventListener('load', this.loader)
         
     }
@@ -29,7 +23,7 @@ export default class Picture extends Component {
         } else {
             console.log("webkit or something undefined")
         }
-        alert(`Страница загружена. Image size: ${img.offsetWidth}x${img.offsetHeight}`);
+        // alert(`Image size: ${img.offsetWidth}x${img.offsetHeight}`);
       }
 
     render() {
