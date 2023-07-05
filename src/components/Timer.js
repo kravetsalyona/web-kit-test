@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-// import { experimental_useEffectEvent as useEffectEvent } from 'react';
+import { useState, useLayoutEffect } from 'react';
 
 export default function Timer() {
   const [count, setCount] = useState(0);
@@ -9,7 +8,7 @@ export default function Timer() {
     setCount(c => c + increment);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const id = setInterval(() => {
       onTick();
     }, 1000);
@@ -21,7 +20,7 @@ export default function Timer() {
   return (
     <>
       <h1>
-        Counter: {count}
+        Timer: {count}
         <button onClick={() => setCount(0)}>Reset</button>
       </h1>
       <hr />
