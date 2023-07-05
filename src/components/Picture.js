@@ -32,7 +32,7 @@ export default class Picture extends Component {
 
         // console.log('Страница загружена');
         // const size = `Размер изображения: ${img.offsetWidth}x${img.offsetHeight}`;
-        alert(`Страница загружена. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
+        // alert(`Страница загружена. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
         if (window.webkit) {
             window.webkit.messageHandlers.jsHandler.postMessage(`Страница загружена. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
         } else {
