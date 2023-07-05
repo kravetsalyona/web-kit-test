@@ -23,7 +23,6 @@ export default class Picture extends Component {
         } else {
             console.log("webkit or something undefined")
         }
-        // alert(`Image size: ${img.offsetWidth}x${img.offsetHeight}`);
       }
 
     render() {
