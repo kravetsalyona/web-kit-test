@@ -5,7 +5,7 @@ import logo from '../logo.svg';
 export default class Picture extends Component {
     
     componentDidMount(){
-        const img = document.getElementById('img');
+        // const img = document.getElementById('img');
 
         this.loaderBefore()
         // alert(`Image size: ${img.offsetWidth}x${img.offsetHeight}`)
