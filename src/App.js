@@ -1,5 +1,6 @@
 import './App.css';
 import Title from './components/Title';
+import Pictures from './components/Pictures';
 import Timer from './components/Timer';
 import RandomPlanet from './components/RandomPlanet';
 import Picture from './components/Picture';
@@ -33,6 +34,7 @@ class App extends Component {
 		return (
 			<div>
 				<Title />
+				<Pictures />
 		
         		<Timer />
         		{planet}

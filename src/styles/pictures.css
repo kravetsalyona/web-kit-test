@@ -1,0 +1,23 @@
+.App-content {
+  display: flex;
+  flex-wrap: wrap;
+  height: 50%;
+  width: 300px;
+}
+.App-pic {
+  height: 20vmin;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-pic-spin infinite 20s linear;
+  }
+}
+@keyframes App-pic-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
