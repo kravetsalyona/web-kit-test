@@ -6,7 +6,7 @@ export default class Picture extends Component {
     
     componentDidMount(){
         this.loaderBefore()
-        window.addEventListener('load', this.loader) 
+        window.addEventListener('load', this.loader)
     }
     componentWillUnmount() {
         window.removeEventListener('load', this.loader);

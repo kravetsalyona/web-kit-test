@@ -4,6 +4,7 @@ import Pictures from './components/Pictures';
 import Timer from './components/Timer';
 import RandomPlanet from './components/RandomPlanet';
 import Picture from './components/Picture';
+import Blocks from './components/Blocks';
 // import logo from './logo.svg';
 import { Component } from "react";
 
@@ -47,6 +48,7 @@ class App extends Component {
         		</button>
 				<hr/>
 				<Picture />
+				<Blocks />
 			</div>
 		)
 	}
