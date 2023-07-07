@@ -1,13 +1,14 @@
-import { useEffect } from "react";
+import { useEffect,useRef } from "react";
 import '../styles/blocks.css'
 
 export default function Blocks(){
+    const requestRef = useRef();
 
    useEffect(() => {
      test()
-     const id = requestAnimationFrame(tick)
-     return ()=> cancelAnimationFrame(id);
-     
+     requestRef.current = requestAnimationFrame(tick)
+     return ()=> cancelAnimationFrame(requestRef.current);
+
     },[])
     function getListContent(){
         let result = [];
@@ -31,7 +32,8 @@ export default function Blocks(){
         test().forEach(block => {
             block.style.height = `${block.offsetHeight+1}px`
         });
-        const id = requestAnimationFrame(tick);
+        requestRef.current = requestAnimationFrame(tick);
+        
     }
     
 
