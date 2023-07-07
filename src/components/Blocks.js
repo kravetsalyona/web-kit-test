@@ -5,7 +5,8 @@ export default function Blocks(){
 
    useEffect(() => {
      test()
-     tick()
+     const id = requestAnimationFrame(tick);
+     return ()=> cancelAnimationFrame(id)
     },[])
     function getListContent(){
         let result = [];
@@ -29,7 +30,7 @@ export default function Blocks(){
         test().forEach(block => {
             block.style.height = `${block.offsetHeight+1}px`
         });
-        requestAnimationFrame(tick);
+        const id = requestAnimationFrame(tick);
     }
     
 
