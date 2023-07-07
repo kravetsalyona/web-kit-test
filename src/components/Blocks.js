@@ -5,8 +5,9 @@ export default function Blocks(){
 
    useEffect(() => {
      test()
-     const id = requestAnimationFrame(tick);
-     return ()=> cancelAnimationFrame(id)
+     const id = requestAnimationFrame(tick)
+     return ()=> cancelAnimationFrame(id);
+     
     },[])
     function getListContent(){
         let result = [];
