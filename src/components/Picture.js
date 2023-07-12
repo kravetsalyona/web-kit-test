@@ -26,7 +26,7 @@ export default class Picture extends Component {
         if (window.webkit) {
             window.webkit.messageHandlers.jsHandler.postMessage(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
         } else {
-            console.log("webkit or something undefined")
+            alert("webkit or something undefined")
         }
       }
 
