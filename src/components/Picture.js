@@ -6,10 +6,10 @@ export default class Picture extends Component {
     
     componentDidMount(){
         this.loaderBefore()
-        window.addEventListener('load', this.loader)
+        window.addEventListener('readystatechange', this.loader)
     }
     componentWillUnmount() {
-        window.removeEventListener('load', this.loader);
+        window.removeEventListener('readystatechange', this.loader);
     }
     loaderBefore () {
         const img = document.getElementById('img');
