@@ -22,7 +22,7 @@ export default class Picture extends Component {
       }
     loader () {
         const img = document.getElementById('img');
-        console.log("function loader, picture with size")
+        alert("function loader, picture with size")
         if (window.webkit) {
             window.webkit.messageHandlers.jsHandler.postMessage(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
         } else {
