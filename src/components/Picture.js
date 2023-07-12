@@ -1,15 +1,31 @@
 import { Component} from "react"
 import logo from '../logo.svg';
 
-
+// DOMContentLoaded
 export default class Picture extends Component {
     
+    // componentDidMount(){
+    //     this.loaderBefore()
+    //     console.log(document.readyState)
+    //     if (document.readyState === 'loading') {
+    //         document.addEventListener('DOMContentLoaded', this.loader)
+    //     }
+    //     // else {
+    //     //     this.loader()
+    //     // }
+    // }
+    // componentWillUnmount() {
+    //     document.removeEventListener('DOMContentLoaded', this.loader);
+    // }
     componentDidMount(){
         this.loaderBefore()
-        document.addEventListener('readystatechange', this.loader)
+        window.addEventListener('load', this.loader)
+        console.log(window.data)
+        window.data = window.data
+        
     }
     componentWillUnmount() {
-        document.removeEventListener('readystatechange', this.loader);
+        window.removeEventListener('load', this.loader);
     }
     loaderBefore () {
         const img = document.getElementById('img');
