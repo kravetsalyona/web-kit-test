@@ -13,6 +13,7 @@ export default class Picture extends Component {
     }
     loaderBefore () {
         const img = document.getElementById('img');
+        console.log("function loaderBefore, picture with nosize")
         if (window.webkit) {
             window.webkit.messageHandlers.jsHandler.postMessage(`Image size: ${img.offsetWidth}x${img.offsetHeight}`)
         } else {
@@ -21,6 +22,7 @@ export default class Picture extends Component {
       }
     loader () {
         const img = document.getElementById('img');
+        console.log("function loader, picture with size")
         if (window.webkit) {
             window.webkit.messageHandlers.jsHandler.postMessage(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
         } else {
