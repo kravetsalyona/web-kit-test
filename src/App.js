@@ -24,7 +24,7 @@ class App extends Component {
 		// const img = document.getElementById('img');
 		// alert(`Размер изображения: ${img.offsetWidth}x${img.offsetHeight}`);
 		if (window.webkit) {
-			window.webkit.messageHandlers.jsHandler.postMessage("Did finished")
+			window.webkit.messageHandlers.jsHandler.postMessage("Did finish")
 		} else {
 			console.log("webkit or something undefined")
 		}

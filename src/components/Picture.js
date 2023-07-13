@@ -45,8 +45,6 @@ export default class Picture extends Component {
     }
     onBeforeLoad_handler () {
         const img = document.getElementById('img');
-        // alert("yup")
-        console.log("function loaderBefore, picture with nosize")
         if (window.webkit) {
             window.webkit.messageHandlers.jsHandler.postMessage(`Image size: ${img.offsetWidth}x${img.offsetHeight}`)
         } else {
