@@ -19,22 +19,22 @@ export default class Picture extends Component {
     // }
     componentDidMount(){
         this.onBeforeLoad_handler()
-        // window.addEventListener('load', this.onLoad_handler)
+        window.addEventListener('pageshow', this.onLoad_handler)
     
         function onLoad(callback){
             if (document.readyState === 'complete') {
-                callback();
+                setTimeout(callback,0);
             } else {
                 window.addEventListener("load", callback);
             }
         }
         onLoad(function(){
             const img = document.getElementById('img');
-            alert(" alert: function loader, picture with size")
+            // alert(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
             if (window.webkit) {
                 window.webkit.messageHandlers.jsHandler.postMessage(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
             } else {
-                alert("webkit or something undefined")
+                console.log("webkit or something undefined")
             }
         });
 
@@ -51,15 +51,15 @@ export default class Picture extends Component {
             console.log("webkit or something undefined")
         }
       }
-    // onLoad_handler () {
-    //     const img = document.getElementById('img');
-    //     alert("function loader, picture with size")
-    //     if (window.webkit) {
-    //         window.webkit.messageHandlers.jsHandler.postMessage(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
-    //     } else {
-    //         alert("webkit or something undefined")
-    //     }
-    //   }
+    onLoad_handler () {
+        const img = document.getElementById('img');
+        alert("я pageshow")
+        if (window.webkit) {
+            window.webkit.messageHandlers.jsHandler.postMessage(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
+        } else {
+            // alert("webkit or something undefined")
+        }
+      }
 
     render() {
     return (<>
