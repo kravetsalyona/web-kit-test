@@ -23,14 +23,14 @@ export default class Picture extends Component {
     
         function onLoad(callback){
             if (document.readyState === 'complete') {
-                setTimeout(callback,0);
+                setTimeout(callback,10);
             } else {
                 window.addEventListener("load", callback);
             }
         }
         onLoad(function(){
             const img = document.getElementById('img');
-            // alert(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
+            alert(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
             if (window.webkit) {
                 window.webkit.messageHandlers.jsHandler.postMessage(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
             } else {
