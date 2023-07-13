@@ -18,17 +18,34 @@ export default class Picture extends Component {
     //     document.removeEventListener('DOMContentLoaded', this.loader);
     // }
     componentDidMount(){
-        this.loaderBefore()
-        window.addEventListener('load', this.loader)
-        console.log(window.data)
-        window.data = window.data
+        this.onBeforeLoad_handler()
+        // window.addEventListener('load', this.onLoad_handler)
+    
+        function onLoad(callback){
+            if (document.readyState === 'complete') {
+                callback();
+            } else {
+                window.addEventListener("load", callback);
+            }
+        }
+        onLoad(function(){
+            const img = document.getElementById('img');
+            alert(" alert: function loader, picture with size")
+            if (window.webkit) {
+                window.webkit.messageHandlers.jsHandler.postMessage(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
+            } else {
+                alert("webkit or something undefined")
+            }
+        });
+
         
     }
     componentWillUnmount() {
-        window.removeEventListener('load', this.loader);
+        window.removeEventListener('load', this.onLoad_handler);
     }
-    loaderBefore () {
+    onBeforeLoad_handler () {
         const img = document.getElementById('img');
+        // alert("yup")
         console.log("function loaderBefore, picture with nosize")
         if (window.webkit) {
             window.webkit.messageHandlers.jsHandler.postMessage(`Image size: ${img.offsetWidth}x${img.offsetHeight}`)
@@ -36,15 +53,15 @@ export default class Picture extends Component {
             console.log("webkit or something undefined")
         }
       }
-    loader () {
-        const img = document.getElementById('img');
-        alert("function loader, picture with size")
-        if (window.webkit) {
-            window.webkit.messageHandlers.jsHandler.postMessage(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
-        } else {
-            alert("webkit or something undefined")
-        }
-      }
+    // onLoad_handler () {
+    //     const img = document.getElementById('img');
+    //     alert("function loader, picture with size")
+    //     if (window.webkit) {
+    //         window.webkit.messageHandlers.jsHandler.postMessage(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
+    //     } else {
+    //         alert("webkit or something undefined")
+    //     }
+    //   }
 
     render() {
     return (<>
