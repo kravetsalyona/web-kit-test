@@ -1,19 +1,8 @@
-import { useEffect, useState} from "react"
+import { useEffect} from "react"
 import logo from '../logo.svg';
-// export function useFirstRender() {
-//     const isFirst = useRef(true)
-  
-//     if (isFirst.current) {
-//       isFirst.current = false
-  
-//       return true
-//     }
-  
-//     return isFirst.current
-//   }
 
 const Picture = () => {
-    const [, setFirstRender] = useState(true);
+    // const [, setFirstRender] = useState(true);
     // useEffect(() => {
     //     const img = document.getElementById('img');
 
@@ -24,28 +13,52 @@ const Picture = () => {
 
     // })
     
-    useEffect(() => {
-        setTimeout(() => {
-            function onLoad(callback){
-                if (document.readyState === 'complete') {
-                    callback()
-                } else {
-                    window.addEventListener("load", callback);
-                }
-            }
-            onLoad(function(){
-                const img = document.getElementById('img');
-                alert(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
-                if (window.webkit) {
-                    window.webkit.messageHandlers.jsHandler.postMessage(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
-                } else {
-                    console.log("webkit or something undefined")
-                }
-            });
-        }, 0)
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         function onLoad(callback){
+    //             if (document.readyState === 'complete') {
+    //                 callback()
+    //             } else {
+    //                 window.addEventListener("load", callback);
+    //             }
+    //         }
+    //         onLoad(() => {
+    //             const img = document.getElementById('img');
+    //             alert(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
+    //             if (window.webkit) {
+    //                 window.webkit.messageHandlers.jsHandler.postMessage(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
+    //             } else {
+    //                 console.log("webkit or something undefined")
+    //             }
+    //         });
+    //     }, 0)
 
-        // Вызываем ререндер
-        setFirstRender(false);
+    //     // Вызываем ререндер
+    //     setFirstRender(false);
+    // }, [])
+
+    useEffect(() => {
+        onBeforeLoad_handler();
+        const complete = () => {
+            window.removeEventListener('load', complete)
+            var img = document.getElementById('img');
+            // console.log(`${img.offsetWidth}x${img.offsetHeight}`);
+            alert(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
+            if (window.webkit) {
+                window.webkit.messageHandlers.jsHandler.postMessage(`Image size: ${img.offsetWidth}x${img.offsetHeight}`)
+            } else {
+                console.log("webkit or something undefined")
+            }
+        }
+
+        // console.log(document.readyState === 'complete');
+
+        if (document.readyState === 'complete') {
+            setTimeout(complete);
+        } else {
+            window.addEventListener('load', complete)
+            // console.log(global);
+        }
     }, [])
     
     // useEffect(() => {
@@ -67,9 +80,7 @@ const Picture = () => {
     //             console.log("webkit or something undefined")
     //         }
     //     });
-    //     return () => window.removeEventListener('load', onLoad);
-        
-        
+    //     return () => window.removeEventListener('load', onLoad); 
     // })
     
         
