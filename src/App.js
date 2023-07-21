@@ -52,6 +52,7 @@ class App extends Component {
 					<input
 						name="numberOfGuests"
 						type="number"
+						inputmode="numeric"
 						value={this.state.numberOfGuests}
 						onChange={this.handleInputChange} />
 				</label>
