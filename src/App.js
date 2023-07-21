@@ -9,10 +9,16 @@ import Blocks from './components/Blocks';
 import { Component } from "react";
 
 class App extends Component {
-	state = {
-		showRandomPlanet: true,
-		selectedPerson: null,
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			showRandomPlanet: true,
+			selectedPerson: null,
+			numberOfGuests: 2,
+		};
+	
+		this.handleInputChange = this.handleInputChange.bind(this);
+	  }
 	toggleRandomPlanet = () => {
 		this.setState((state) => {
 		  return {
@@ -30,14 +36,26 @@ class App extends Component {
 		}
 
 	}
+	handleInputChange(event) {
+		// const target = event.target;
+		
+		
+	  }
 	render() {
 		const planet = this.state.showRandomPlanet ? <RandomPlanet /> : null;
 		return (
 			<div>
 				<Title />
 				<Pictures />
-		
-        		<Timer />
+				<label>
+					Количество гостей:
+					<input
+						name="numberOfGuests"
+						type="number"
+						value={this.state.numberOfGuests}
+						onChange={this.handleInputChange} />
+				</label>
+				<Timer />
         		{planet}
 
        			<button
