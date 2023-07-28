@@ -32,7 +32,7 @@ export default function Blocks(){
         test().forEach(block => {
             block.style.height = `${block.offsetHeight+1}px`
         });
-        requestRef.current = requestAnimationFrame(tick);
+        // requestRef.current = requestAnimationFrame(tick);
         
     }
     
