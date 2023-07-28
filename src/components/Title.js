@@ -21,6 +21,7 @@ return (<>
     <h2>{currentBalance}</h2>
     <p>{countOfPoints}</p>
     <a href='https://dzen.ru/'>Ссылка на Дзен</a>
+    <br/>
     <a href='https://dzen.ru/pogoda/saint-petersburg?lat=59.938951&lon=30.315635'>Ссылка на Дзен-Погода</a>
 </>)
 }
