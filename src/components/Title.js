@@ -33,8 +33,8 @@ return (<>
     <h1>{title}</h1>
     <h2>{currentBalance}</h2>
     <p>{countOfPoints}</p>
-    <a href='https://dzen.ru/' id="elemDzenURL" disabled={status }>Ссылка на Дзен</a>
+    <a href='https://dzen.ru/' id="elemDzenURL" disabled={status}>Ссылка на Дзен</a>
     <br/>
-    <a href='https://dzen.ru/pogoda/saint-petersburg?lat=59.938951&lon=30.315635' disabled={true}>Ссылка на Дзен-Погода</a>
+    <a href='https://dzen.ru/pogoda/saint-petersburg?lat=59.938951&lon=30.315635' disabled>Ссылка на Дзен-Погода</a>
 </>)
 }
