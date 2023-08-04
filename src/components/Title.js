@@ -16,16 +16,16 @@ export default function Title(){
     if (window.webkit) {
       // window.webkit.messageHandlers.jsHandler.postMessage(`URL: ${dzenURL}`);
       // window.webkit.messageHandlers.jsHandler.postMessage(`URL: ${dzenWeatherURL}`);
-      window.webkit.messageHandlers.loonaStorage.postMessage([{"jsonrpc" : "2.0", "method" : "set", "params" : ['dddd'], "id" : 1}]);
+      window.webkit.messageHandlers.loonaStorage.postMessage({"jsonrpc" : "2.0", "method" : "set", "params" : {"key" : "token", "value" : "dddd"}, "id" : 1});
     }
     
   },[])
   useEffect(() => {
     const didRecieveLoonaStorageResponse = (event) => {
-      alert(event)
+      alert(event);
     }
     window.addEventListener('message', didRecieveLoonaStorageResponse);
-    return () => window.removeEventListener('message', didRecieveLoonaStorageResponse)
+    return () => window.removeEventListener('message', didRecieveLoonaStorageResponse);
     
   }, [])
   // window.updateFromNative = (nativeData) => {
@@ -36,10 +36,11 @@ export default function Title(){
   //     setStatusDzenWeatherURL(false);
   //   }
   // }
-
-  // setTimeout(() => {
-  //   setStatus(false);
-  // }, 4000)
+  useEffect(() => {
+  setTimeout(() => {
+    window.webkit.messageHandlers.loonaStorage.postMessage({"jsonrpc" : "2.0", "method" : "get", "params" : {"key" : "token"}, "id" : 2});
+  }, 5000)
+  }, [])
   
 return (<>
     <h1>{title}</h1>
