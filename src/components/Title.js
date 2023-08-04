@@ -16,7 +16,12 @@ export default function Title(){
     if (window.webkit) {
       // window.webkit.messageHandlers.jsHandler.postMessage(`URL: ${dzenURL}`);
       // window.webkit.messageHandlers.jsHandler.postMessage(`URL: ${dzenWeatherURL}`);
-      window.webkit.messageHandlers.loonaStorage.postMessage({"jsonrpc" : "2.0", "method" : "set", "params" : {"key" : "token", "value" : "dddd"}, "id" : 1});
+      window.webkit.messageHandlers.loonaStorage.postMessage({"jsonrpc" : "2.0", "method" : "set", "params" :  {"key" : "token", "value" : JSON.stringify( {
+        "access_token": 'string',
+        "refresh_token": 'string',
+        "scope": 'string',
+        "id_token": 'string'})
+    }, "id" : 1});
       setTimeout(() => {
       window.webkit.messageHandlers.loonaStorage.postMessage({"jsonrpc" : "2.0", "method" : "get", "params" : {"key" : "token"}, "id" : 2});
       }, 5000)
