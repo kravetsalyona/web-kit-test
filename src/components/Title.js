@@ -37,9 +37,9 @@ export default function Title(){
   //   }
   // }
   useEffect(() => {
-  setTimeout(() => {
-    window.webkit.messageHandlers.loonaStorage.postMessage({"jsonrpc" : "2.0", "method" : "get", "params" : {"key" : "token"}, "id" : 2});
-  }, 5000)
+    setTimeout(() => {
+      window.webkit.messageHandlers.loonaStorage.postMessage({"jsonrpc" : "2.0", "method" : "get", "params" : {"key" : "token"}, "id" : 2});
+    }, 5000)
   }, [])
   
 return (<>
