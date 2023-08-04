@@ -12,11 +12,14 @@ export default function Title(){
   const dzenWeatherURL = 'https://dzen.ru/pogoda/saint-petersburg?lat=59.938951&lon=30.315635';
   const [statusDzenURL, setStatusDzenURL] = useState(true);
   const [statusDzenWeatherURL, setStatusDzenWeatherURL] = useState(true);
-  useEffect( () =>{
+  useEffect( () => {
     if (window.webkit) {
       // window.webkit.messageHandlers.jsHandler.postMessage(`URL: ${dzenURL}`);
       // window.webkit.messageHandlers.jsHandler.postMessage(`URL: ${dzenWeatherURL}`);
       window.webkit.messageHandlers.loonaStorage.postMessage({"jsonrpc" : "2.0", "method" : "set", "params" : {"key" : "token", "value" : "dddd"}, "id" : 1});
+      setTimeout(() => {
+      window.webkit.messageHandlers.loonaStorage.postMessage({"jsonrpc" : "2.0", "method" : "get", "params" : {"key" : "token"}, "id" : 2});
+      }, 5000)
     }
     
   },[])
@@ -36,11 +39,9 @@ export default function Title(){
   //     setStatusDzenWeatherURL(false);
   //   }
   // }
-  useEffect(() => {
-    setTimeout(() => {
-      window.webkit.messageHandlers.loonaStorage.postMessage({"jsonrpc" : "2.0", "method" : "get", "params" : {"key" : "token"}, "id" : 2});
-    }, 5000)
-  }, [])
+  // useEffect(() => {
+    
+  // }, [])
   
 return (<>
     <h1>{title}</h1>
