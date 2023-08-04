@@ -27,7 +27,7 @@ export default function Title(){
     window.addEventListener('message', didRecieveLoonaStorageResponse);
     return () => window.removeEventListener('message', didRecieveLoonaStorageResponse)
     
-  })
+  }, [])
   // window.updateFromNative = (nativeData) => {
   //   if (nativeData === dzenURL) {
   //     setStatusDzenURL(false);
