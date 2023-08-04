@@ -14,22 +14,20 @@ export default function Title(){
   const [statusDzenWeatherURL, setStatusDzenWeatherURL] = useState(true);
   useEffect( () =>{
     if (window.webkit) {
-      window.webkit.messageHandlers.jsHandler.postMessage(`URL: ${dzenURL}`);
-      window.webkit.messageHandlers.jsHandler.postMessage(`URL: ${dzenWeatherURL}`);
+      // window.webkit.messageHandlers.jsHandler.postMessage(`URL: ${dzenURL}`);
+      // window.webkit.messageHandlers.jsHandler.postMessage(`URL: ${dzenWeatherURL}`);
+      window.webkit.messageHandlers.loonaStorage.postMessage([{"jsonrpc" : "2.0", "method" : "set", "params" : ['dddd'], "id" : 1}]);
     }
-    // else {
-    //   alert(`webkit: отсутствует`)
-    // }
     
   },[])
-  window.updateFromNative = (nativeData) => {
-    if (nativeData === dzenURL) {
-      setStatusDzenURL(false);
-    }
-    if (nativeData === dzenWeatherURL) {
-      setStatusDzenWeatherURL(false);
-    }
-  }
+  // window.updateFromNative = (nativeData) => {
+  //   if (nativeData === dzenURL) {
+  //     setStatusDzenURL(false);
+  //   }
+  //   if (nativeData === dzenWeatherURL) {
+  //     setStatusDzenWeatherURL(false);
+  //   }
+  // }
 
   // setTimeout(() => {
   //   setStatus(false);
