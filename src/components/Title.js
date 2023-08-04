@@ -20,6 +20,14 @@ export default function Title(){
     }
     
   },[])
+  useEffect(() => {
+    const didRecieveLoonaStorageResponse = (event) => {
+      alert(event)
+    }
+    window.addEventListener('message', didRecieveLoonaStorageResponse);
+    return () => window.removeEventListener('message', didRecieveLoonaStorageResponse)
+    
+  })
   // window.updateFromNative = (nativeData) => {
   //   if (nativeData === dzenURL) {
   //     setStatusDzenURL(false);
