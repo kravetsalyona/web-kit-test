@@ -16,16 +16,16 @@ export default function Title(){
   
   useEffect( () => {
     if (window.webkit) {
-      window.webkit.messageHandlers.loonaStorage.postMessage({
+      window.webkit.messageHandlers.loonaStorage.postMessage(JSON.stringify({
         "jsonrpc" : "2.0",
         "method" : "set",
         "params" :  {"key" : "token", "value" : JSON.stringify( { "access_token": 'string',
                                                                   "refresh_token": 'string',
                                                                   "scope": 'string',
                                                                   "id_token": 'string'})},
-        "id" : 1});
+        "id" : 1}));
       setTimeout(() => {
-      window.webkit.messageHandlers.loonaStorage.postMessage({"jsonrpc" : "2.0", "method" : "get", "params" : {"key" : "token"}, "id" : 2});
+      window.webkit.messageHandlers.loonaStorage.postMessage(JSON.stringify({"jsonrpc" : "2.0", "method" : "get", "params" : {"key" : "token"}, "id" : 2}));
       }, 5000)
     }
     
@@ -39,7 +39,7 @@ export default function Title(){
     return () => window.removeEventListener('message', didRecieveLoonaStorageResponse);
     
   }, [])
-  
+
   useEffect(() => {
     const didAddLoonaStorageResponse = (event) => {
       alert(`я storage ${event}`);
