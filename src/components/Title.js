@@ -12,22 +12,25 @@ export default function Title(){
   const dzenWeatherURL = 'https://dzen.ru/pogoda/saint-petersburg?lat=59.938951&lon=30.315635';
   const [statusDzenURL, setStatusDzenURL] = useState(true);
   const [statusDzenWeatherURL, setStatusDzenWeatherURL] = useState(true);
+
+  
   useEffect( () => {
     if (window.webkit) {
-      // window.webkit.messageHandlers.jsHandler.postMessage(`URL: ${dzenURL}`);
-      // window.webkit.messageHandlers.jsHandler.postMessage(`URL: ${dzenWeatherURL}`);
-      window.webkit.messageHandlers.loonaStorage.postMessage({"jsonrpc" : "2.0", "method" : "set", "params" :  {"key" : "token", "value" : JSON.stringify( {
-        "access_token": 'string',
-        "refresh_token": 'string',
-        "scope": 'string',
-        "id_token": 'string'})
-    }, "id" : 1});
+      window.webkit.messageHandlers.loonaStorage.postMessage({
+        "jsonrpc" : "2.0",
+        "method" : "set",
+        "params" :  {"key" : "token", "value" : JSON.stringify( { "access_token": 'string',
+                                                                  "refresh_token": 'string',
+                                                                  "scope": 'string',
+                                                                  "id_token": 'string'})},
+        "id" : 1});
       setTimeout(() => {
       window.webkit.messageHandlers.loonaStorage.postMessage({"jsonrpc" : "2.0", "method" : "get", "params" : {"key" : "token"}, "id" : 2});
       }, 5000)
     }
     
   },[])
+
   useEffect(() => {
     const didRecieveLoonaStorageResponse = (event) => {
       alert(event);
@@ -36,18 +39,16 @@ export default function Title(){
     return () => window.removeEventListener('message', didRecieveLoonaStorageResponse);
     
   }, [])
-  // window.updateFromNative = (nativeData) => {
-  //   if (nativeData === dzenURL) {
-  //     setStatusDzenURL(false);
-  //   }
-  //   if (nativeData === dzenWeatherURL) {
-  //     setStatusDzenWeatherURL(false);
-  //   }
-  // }
-  // useEffect(() => {
-    
-  // }, [])
   
+  useEffect(() => {
+    const didAddLoonaStorageResponse = (event) => {
+      alert(`я storage ${event}`);
+    }
+    window.addEventListener('storage', didAddLoonaStorageResponse);
+    return () => window.removeEventListener('storage', didAddLoonaStorageResponse);
+    
+  }, [])
+
 return (<>
     <h1>{title}</h1>
     <h2>{currentBalance}</h2>
