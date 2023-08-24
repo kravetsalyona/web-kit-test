@@ -56,10 +56,6 @@ export default function Timer() {
     
   // }, [])
 
-
-
-
-
   return (
     <>
       <h1>
