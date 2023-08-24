@@ -13,19 +13,22 @@ export default function Title(){
   const [statusDzenURL, setStatusDzenURL] = useState(true);
   const [statusDzenWeatherURL, setStatusDzenWeatherURL] = useState(true);
 
-  
   useEffect( () => {
     if (window.webkit) {
-      window.webkit.messageHandlers.loonaStorage.postMessage(JSON.stringify({
-        "jsonrpc" : "2.0",
-        "method" : "set",
-        "params" :  {"key" : "token", "value" : JSON.stringify( { "access_token": 'string',
-                                                                  "refresh_token": 'string',
-                                                                  "scope": 'string',
-                                                                  "id_token": 'string'})},
-        "id" : 1}));
+      window.webkit.messageHandlers.loonaStorage.postMessage(JSON.stringify({ "jsonrpc" : "2.0",
+                                                                              "method" : "set",
+                                                                              "params" :  {"key" : "token", "value" : JSON.stringify( { "access_token": 'string',
+                                                                                                                                        "refresh_token": 'string',
+                                                                                                                                        "scope": 'string',
+                                                                                                                                        "id_token": 'string'})},
+                                                                                                                                        "id" : 1
+      }));
       setTimeout(() => {
-      window.webkit.messageHandlers.loonaStorage.postMessage(JSON.stringify({"jsonrpc" : "2.0", "method" : "get", "params" : {"key" : "token"}, "id" : 2}));
+      window.webkit.messageHandlers.loonaStorage.postMessage(JSON.stringify({ "jsonrpc" : "2.0",
+                                                                              "method" : "get",
+                                                                              "params" : {"key" : "token"},
+                                                                              "id" : 2
+      }));
       }, 5000)
     }
     
@@ -33,7 +36,7 @@ export default function Title(){
 
   useEffect(() => {
     const didRecieveLoonaStorageResponse = (event) => {
-      alert(event);
+      alert(`Я получаю значение из LoonaStorage ${event}`);
     }
     window.addEventListener('message', didRecieveLoonaStorageResponse);
     return () => window.removeEventListener('message', didRecieveLoonaStorageResponse);
@@ -42,7 +45,7 @@ export default function Title(){
 
   useEffect(() => {
     const didAddLoonaStorageResponse = (event) => {
-      alert(`я storage ${event}`);
+      alert(`Я добавляю значение в LoonaStorage ${event}`);
     }
     window.addEventListener('storage', didAddLoonaStorageResponse);
     return () => window.removeEventListener('storage', didAddLoonaStorageResponse);
