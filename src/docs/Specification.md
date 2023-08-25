@@ -1,52 +1,46 @@
-# Спецификация Loona Loading Page
-##### Дата происхождения:
-24 августа 2023г.
-##### Обновлено:
-25 августа 2023г.
+# API для предзагрузки страниц
+**Версия браузера**: `1.0.0`
 
-##### Автор:
-Рабочая группа LLP. (тут нужно будет указать рабочую почту, чтобы собирать ос) 
 
-##### Совместимость:
-Технология работает в браузере Loona с версиии v1.0.0(указать правдивую версию) .
+## Введение
+Для чего это нужно:
+Механизм имитирует поведение нативного приложения.
+Используется для редиректа с фоновой подгрузкой страницы, на которую вы хотите перевести пользователя.
 
+Механизм реализуется посредством вызова метода `postMessage` следующих `messageHandlers`:
+- `loonaStorage`
+- `preloadPages`
+- `preloadRedirect`
+
+И передачи сообщения (объект) в формате `JSON string`. 
+
+:::tip Обратите внимание
+Объект должен соответствует протоколу [JSON-RPC](https://www.jsonrpc.org/specification) версии 2.0.
+:::
+
+## Методы
+### loonaStorage метод "set"
+Сохраняет `<значение>` для `<ключа>` в хранилище браузера Loona `loonaStorage`.
+
+```javascript
+window
+  .webkit
+  .messageHandlers
+  .loonaStorage
+  .postMessage(JSON.stringify({ "jsonrpc": "2.0",
+                                 "method": "set",
+                                 "params": {"key":   "<ключ>",
+                                            "value": "<значение>"},
+                                 "id":     1}));
 ```
-Оглавление
-1 Введение
-2 Методы отправки PostMessage браузеру
-3 Примеры использования
-```
 
-## 1 Введение
-## 2 Методы отправки PostMessage браузеру
-### loonaStorage set
-Отправляет сообщение Браузеру о намерении сохранить по ключу значение в хранилище браузера Loona "loonaStorage".
-
-Отправляемое сообщение это JSON объект сконвертированный в строку.
-Обратите внимание: Объект должен соответсвовать протоколу [JSON-RPC](https://www.jsonrpc.org/specification) версии 2.0 .
+### loonaStorage get
+Получает `<значение>` по `<ключу>` из хранилища браузера Loona `loonaStorage`.
 
 ```javascript
 window.webkit.messageHandlers.loonaStorage.postMessage(JSON.stringify({ "jsonrpc" : "2.0",
                                                                         "method" : "set",
-                                                                        "params" :  {"key" : "token",
-                                                                                     "value" : yourstoken,
-                                                                                    },
-                                                                        "id" : 1,
-                                                                      }
-                                                                     )
-                                                      );
-```
-
-### loonaStorage get
-Отправляет сообщение Браузеру о намерении получить по ключу значение из хранилища браузера Loona "loonaStorage".
-
-Получаемое сообщение это JSON объект сконвертированный в строку.
-Обратите внимание: Объект должен соответсвовать протоколу [JSON-RPC](https://www.jsonrpc.org/specification) версии 2.0 .
-
-```javascript
-window.webkit.messageHandlers.loonaStorage.postMessage(JSON.stringify({ "jsonrpc" : "2.0",
-                                                                        "method" : "token",
-                                                                        "params" : {"key" : "token"},
+                                                                        "params" : {"key" : "<ключ>"},
                                                                         "id" : 2,
                                                                       }
                                                                      )
@@ -54,16 +48,13 @@ window.webkit.messageHandlers.loonaStorage.postMessage(JSON.stringify({ "jsonrpc
 ```
 
 ### preloadPages
-Отправляет сообщение Браузеру о намерении сохранить по ключу значение url страницы в хранилище браузера Loona "loonaStorage".
-
-Получаемое сообщение это JSON объект сконвертированный в строку.
-Обратите внимание: Объект должен соответсвовать протоколу [JSON-RPC](https://www.jsonrpc.org/specification) версии 2.0 .
+Сохраняет `<ссылку для перехода>` для ключа `<url>` в хранилище браузера Loona `loonaStorage`.
 
 ```javascript
 window.webkit.messageHandlers.preloadPages.postMessage(JSON.stringify({ "jsonrpc" : "2.0",
                                                                         "method" : "set",
                                                                         "params" :  {"key" : "url",
-                                                                                     "value" : yoursURLForHandOver
+                                                                                     "value" : `<ссылка для перехода>`
                                                                                     },
                                                                         "id" : 1,
                                                                        }
@@ -71,10 +62,7 @@ window.webkit.messageHandlers.preloadPages.postMessage(JSON.stringify({ "jsonrpc
                                                       );
 ```
 ### preloadRedirect
-Отправляет сообщение Браузеру о намерении получить по ключу значение url страницы из хранилища браузера Loona "loonaStorage".
-
-Получаемое сообщение это JSON объект сконвертированный в строку.
-Обратите внимание: Объект должен соответсвовать протоколу [JSON-RPC](https://www.jsonrpc.org/specification) версии 2.0 .
+Получает `<ссылку для перехода>` для ключа `<url>` из хранилища браузера Loona `loonaStorage`.
 
 ```javascript
 window.webkit.messageHandlers.preloadPages.postMessage(JSON.stringify({ "jsonrpc" : "2.0",
