@@ -24,7 +24,9 @@ export default function Title(){
                                                                                                                                         "id" : 1
       }));
       setTimeout(() => {
-      window.webkit.messageHandlers.loonaStorage.postMessage(JSON.stringify({ "jsonrpc" : "2.0",
+      window
+            .webkit
+            .messageHandlers.loonaStorage.postMessage(JSON.stringify({ "jsonrpc" : "2.0",
                                                                               "method" : "get",
                                                                               "params" : {"key" : "token"},
                                                                               "id" : 2
@@ -47,17 +49,17 @@ export default function Title(){
     const didAddLoonaStorageResponse = (event) => {
       alert(`Я добавляю значение в LoonaStorage ${event}`);
     }
-    window.addEventListener('storage', didAddLoonaStorageResponse);
+    window.addEventListener('message', didAddLoonaStorageResponse);
     return () => window.removeEventListener('storage', didAddLoonaStorageResponse);
     
   }, [])
 
-return (<>
-    <h1>{title}</h1>
-    <h2>{currentBalance}</h2>
-    <p>{countOfPoints}</p>
-    <a className={cn({isDisabledLink: statusDzenURL}, {isDisabledLink: statusDzenURL})} href='https://dzen.ru/' >Ссылка на Дзен</a>
-    <br/>
-    <a className={cn({isDisabledLink: statusDzenWeatherURL}, {isDisabledLink: statusDzenWeatherURL})}  href='https://dzen.ru/pogoda/saint-petersburg?lat=59.938951&lon=30.315635' >Ссылка на Дзен-Погода</a>
-</>)
+  return (<>
+      <h1>{title}</h1>
+      <h2>{currentBalance}</h2>
+      <p>{countOfPoints}</p>
+      <a className={cn({isDisabledLink: statusDzenURL}, {isDisabledLink: statusDzenURL})} href='https://dzen.ru/' >Ссылка на Дзен</a>
+      <br/>
+      <a className={cn({isDisabledLink: statusDzenWeatherURL}, {isDisabledLink: statusDzenWeatherURL})}  href='https://dzen.ru/pogoda/saint-petersburg?lat=59.938951&lon=30.315635' >Ссылка на Дзен-Погода</a>
+  </>)
 }
