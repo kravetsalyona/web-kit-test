@@ -3,10 +3,8 @@
 
 
 ## Введение
-Для чего это нужно:
-???
 Механизм имитирует поведение нативного приложения.
-Используется для редиректа с фоновой подгрузкой страницы, на которую вы хотите перевести пользователя.
+Передача массива URL для предзагрузки на стороне нативного приложения, нативиный переход между предзагруженными страницами, передача и сохранение данных в loonaStorage, который так же находится на стороне нативного приложения.
 
 Механизм реализуется посредством вызова метода `postMessage` следующих `messageHandlers`:
 - `loonaStorage`
@@ -16,7 +14,7 @@
 И передачи сообщения (объект) в формате `JSON string`. 
 
 :::tip Обратите внимание
-Объект должен соответствует протоколу [JSON-RPC](https://www.jsonrpc.org/specification) версии 2.0.
+Объект должен соответствовать протоколу [JSON-RPC](https://www.jsonrpc.org/specification) версии 2.0.
 :::
 
 ## Методы
@@ -61,7 +59,6 @@ window
 Регистрирует `массив ссылок для перехода на другие сайты` для ключа `urls`. Массив состоит из одного и более элементов (`<ссылка для перехода>`, `<n-ая ссылка для перехода>`).
 
 ```javascript
-{"jsonrpc" : "2.0", "method" : "preload", "params" : {"url" : ["dddddd"]}, "id" : 3}
 window
     .webkit
     .messageHandlers
@@ -87,7 +84,7 @@ window
         JSON.stringify({ 
             "jsonrpc" : "2.0",
             "method" : "preload",
-            "params" : {"url" : ["<ссылка для перехода>"]},
+            "params" : {"url" : "<ссылка для перехода>"},
             "id" : 4,
         })
     );
@@ -98,16 +95,10 @@ window
 ```javascript
 window.addEventListener('message', didRecieveLoonaStorageResponse);
 ```
-### didAddLoonaStorageResponse
-Хранилище браузера Loona `loonaStorage` добавило значение по ключу.???
-
-```javascript
-window.addEventListener('message', didAddLoonaStorageResponse);
-```
 
 ## 3 Примеры использования
 ### Предзагрузка страницы без аутентификации
-На странице выведены две ссылки. Мы хотим, чтобы браузер предзагрузил одну страницу `https://dzen.ru/` и пользователь потом по ней перешёл.
+На странице выведены две ссылки. Мы хотим, чтобы браузер предзагрузил одну страницу `https://dzen.ru/` и пользователь потом по ней перешёл.???
 
 Первое, отправляем браузеру информацию о том, какие ссылки нужно предзагрузить. Затем, через 5 секунд, отправляем браузеру информацию на какую ссылку надо перейти(`https://dzen.ru/`).
 
@@ -126,12 +117,12 @@ export default function OursComponent(){
     const [statusURLForHandOverNumberOne, setStatusURLForHandOverNumberOne] = useState(true);
     const [statusURLForHandOverNumberTwo, setStatusURLForHandOverNumberTwo] = useState(true);
 
-    const didRecieveLoonaStorageResponse = () => {
+    const didRecieveLoonaStorageResponse = (event: MessageEvent<JsonRpcResponse<unknown>>) => {
         alert(`Я получаю значение из LoonaStorage`);
     }
 
-    const didAddLoonaStorageResponse = () => {
-        alert(`Я добавляю значение в LoonaStorage`);
+    function handleEvent (event: MessageEvent<JsonRpcResponse<unknown>>) {
+        subscribers.forEach((fn) => fn(event.data));
     }
 
     useEffect( () => {
@@ -158,7 +149,7 @@ export default function OursComponent(){
                         JSON.stringify({
                             "jsonrpc" : "2.0",
                             "method" : "get",
-                            "params" : {"url" : [URL_FOR_HAND_OVER_NUMBER_ONE]},
+                            "params" : {"url" : URL_FOR_HAND_OVER_NUMBER_ONE},
                             "id" : 4,
                         })
                     );
@@ -166,9 +157,9 @@ export default function OursComponent(){
         }
 
         window.addEventListener('message', didRecieveLoonaStorageResponse);
-        window.addEventListener('message', didAddLoonaStorageResponse);
 
         return () => {
+            
             window.removeEventListener('message', didRecieveLoonaStorageResponse);
             window.removeEventListener('storage', didAddLoonaStorageResponse);
         }
