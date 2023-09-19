@@ -27,8 +27,10 @@ export interface PostMessageDataIoS {
         key: string
   
         // optional, ex. phone-number to call
-        value?: string | any
+        value?: string
       }
     }
   }
+
+  {"jsonrpc": "2.0", "handler": "loonaStorage", "body": {"method": "set", "params": {"key": "token", "value": {"access_token": "asdasd"}}}}
   
