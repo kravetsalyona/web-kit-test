@@ -7,7 +7,6 @@ const Picture = () => {
         const complete = () => {
             window.removeEventListener('load', complete)
             var img = document.getElementById('img');
-            // alert(`Page loaded. Image size: ${img.offsetWidth}x${img.offsetHeight}`)
             if (window.webkit) {
                 window.webkit.messageHandlers.jsHandler.postMessage(`Image size: ${img.offsetWidth}x${img.offsetHeight}`)
             } else {
