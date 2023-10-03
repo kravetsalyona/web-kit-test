@@ -121,12 +121,12 @@ export default function Title(){
             }}>Автологин false</button>
             <br />
             <button className="favorite android" onClick={() => {
-              messageHandlersAndroid
+              window.messageHandlersAndroid
               .postMessage( JSON.stringify({1:'объект в виде строки, прилетевший из js'}));
             }}>Кнопка для команды андроид(без без вебкит messageHandlersAndroid)</button>
             <br />
             <button className="favorite android" onClick={() => {
-              messageHandlersAndroid
+              window.messageHandlersAndroid
               .pageStateHandler
               .postMessage( JSON.stringify({2: 'объект в виде строки, прилетевший из js'}));
             }}>Кнопка для команды андроид(без вебкит messageHandlersAndroid
