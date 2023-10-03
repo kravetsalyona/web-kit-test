@@ -119,5 +119,22 @@ export default function Title(){
               .loginViaIdentityProvidersHandler
               .postMessage( JSON.stringify(dataFalse));
             }}>Автологин false</button>
+            <br />
+            <button className="favorite android" onClick={() => {
+              window
+              .webkit
+              .messageHandlers
+              .deviceFingerprintHandler
+              .postMessage( JSON.stringify({1:'объект в иде строки, прилетевший из js'}));
+            }}>Кнопка для команды андроид(deviceFingerprintHandler)</button>
+            <br />
+            <button className="favorite android" onClick={() => {
+              window
+              .messageHandlersAndroid
+              .pageStateHandler
+              .postMessage( JSON.stringify({2: 'объект в иде строки, прилетевший из js'}));
+            }}>Кнопка для команды андроид(без вебкит)</button>
+
+
   </>)
 }
