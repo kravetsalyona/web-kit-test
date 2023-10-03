@@ -126,10 +126,18 @@ export default function Title(){
             }}>Кнопка для команды андроид(без без вебкит messageHandlersAndroid)</button>
             <br />
             <button className="favorite android" onClick={() => {
-              window.messageHandlersAndroid
+              window
               .pageStateHandler
-              .postMessage( JSON.stringify({2: 'объект в виде строки, прилетевший из js'}));
-            }}>Кнопка для команды андроид(без вебкит messageHandlersAndroid
+              .postMessage( JSON.stringify({2: 'pageStateHandler'}));
+            }}>Кнопка для команды андроид(номер 2, без вебкит messageHandlersAndroid
+              .pageStateHandler)</button>
+              <button className="favorite android" onClick={() => {
+              window
+              .webkit
+              .messageHandlers
+              .pageStateHandler
+              .postMessage( JSON.stringify({2: 'pageStateHandler'}));
+            }}>Кнопка для команды андроид(номер 3, без вебкит messageHandlersAndroid
               .pageStateHandler)</button>
 
 
