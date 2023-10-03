@@ -139,6 +139,7 @@ export default function Title(){
               .postMessage( JSON.stringify({2: 'pageStateHandler'}));
             }}>Кнопка для команды андроид(номер 3, без вебкит messageHandlersAndroid
               .pageStateHandler)</button>
+              <a  href='https://www.youtube.com/watch?v=sUAPupkWVik' >Ссылка на Дзен</a>
 
 
   </>)
