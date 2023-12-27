@@ -140,9 +140,10 @@ export default function Title(){
             }}>Кнопка для команды андроид(номер 3, без вебкит messageHandlersAndroid
               .pageStateHandler)</button>
               <br />
-              <button className="favorite android" onClick={() => {
-              window.webkit.messageHandlers.initQrScanner.postMessage("")
+              <button className="favorite styled" onClick={() => {
+              window.webkit.messageHandlers.initQrScanner.postMessage("");
             }}>initQrScanner</button>
+              <br />
               <a  href='https://www.youtube.com/watch?v=sUAPupkWVik' >Ссылка на Дзен</a>
 
 
