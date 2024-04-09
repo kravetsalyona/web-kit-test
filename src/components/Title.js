@@ -165,7 +165,7 @@ export default function Title(){
               {/* <a href={myPDF} download="My_File.pdf"> Download Here </a>   */}
               <br />
               {/* <a href={chargeSample} download="your file name">Download</a> */}
-              <a href = "Nurlan_Saburov_02.pkpass" download = "Nurlan_Saburov_02.pkpass">скачать</a>
+              <a href = "Nurlan_Saburov_02.pkpass" download = "Nurlan_Saburov_02.pkpass">Скачать билет</a>
 
 
   </>)
