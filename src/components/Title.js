@@ -1,7 +1,10 @@
 
 
 import React, { useEffect } from "react";
+// import { Link } from "react-router-dom";
 import "../styles/title.css";
+// import MyPDF from './public/Nurlan_Saburov_02.pkpass';  
+// import chargeSample from './public/Nurlan_Saburov_02.pkpass';
 
 let data = {
   "identityProviders":[
@@ -78,7 +81,15 @@ let dataFalse = {
 
 
 
+
 export default function Title(){
+
+//   const downloadCSV (data){
+//     var MIME_TYPE = "application/vnd.apple.pkpass";
+
+//     var blob = new Blob([data], {type: MIME_TYPE});
+//     window.location.href = window.URL.createObjectURL(blob);
+// }
   
   useEffect(() => {
     const complete = () => {
@@ -144,7 +155,17 @@ export default function Title(){
               window.webkit.messageHandlers.initQrScanner.postMessage("");
             }}>initQrScanner</button>
               <br />
-              <a  href='https://www.youtube.com/watch?v=sUAPupkWVik' >Ссылка на Дзен</a>
+              {/* <a  href='https://www.youtube.com/watch?v=sUAPupkWVik' >Ссылка на Дзен</a>
+              <br />
+              <button onclick="downloadFile('Nurlan_Saburov_02.pkpas', './Nurlan_Saburov_02.pkpas')">Скачать файл</button>
+              <br />
+              <input type="button" value="Download Now!" onclick="window.location = 'Nurlan_Saburov_02.pkpass"></input> */}
+              {/* <Link to="/Nurlan_Saburov_02.pkpass" target="_blank" download>Download</Link> */}
+                
+              {/* <a href={myPDF} download="My_File.pdf"> Download Here </a>   */}
+              <br />
+              {/* <a href={chargeSample} download="your file name">Download</a> */}
+              <a href = "Nurlan_Saburov_02.pkpass" download = "Nurlan_Saburov_02.pkpass">скачать</a>
 
 
   </>)
