@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import "../styles/title.css";
 // import MyPDF from './public/Nurlan_Saburov_02.pkpass';  
 // import chargeSample from './public/Nurlan_Saburov_02.pkpass';
+import { v4 as uuidv4 } from 'uuid';
 
 let data = {
   "identityProviders":[
@@ -132,24 +133,23 @@ export default function Title(){
             }}>Автологин false</button>
             <br />
             <button className="favorite android" onClick={() => {
-              window.messageHandlersAndroid
-              .postMessage( JSON.stringify({1:'объект в виде строки, прилетевший из js'}));
-            }}>Кнопка для команды андроид(без без вебкит messageHandlersAndroid)</button>
+              window.AndroidWebViewHandler?.sendMessage( JSON.stringify({ 
+                id: uuidv4(),
+                jsonrpc : '2.0',
+                handler: 'getToken' }));
+            }}>Кнопка для команды андроид(getToken)</button>
             <br />
             <button className="favorite android" onClick={() => {
-              window
-              .pageStateHandler
-              .postMessage( JSON.stringify({2: 'pageStateHandler'}));
-            }}>Кнопка для команды андроид(номер 2, без вебкит messageHandlersAndroid
-              .pageStateHandler)</button>
-              <button className="favorite android" onClick={() => {
-              window
-              .webkit
-              .messageHandlers
-              .pageStateHandler
-              .postMessage( JSON.stringify({2: 'pageStateHandler'}));
-            }}>Кнопка для команды андроид(номер 3, без вебкит messageHandlersAndroid
-              .pageStateHandler)</button>
+              window.AndroidWebViewHandler?.sendMessage( JSON.stringify({
+                id: uuidv4(),
+                jsonrpc : '2.0',
+                handler : 'routing',
+                method : 'newTab',
+                params : {
+                  url: 'https://yandex.ru/pogoda/saint-petersburg?lat=59.938784&lon=30.314997',
+                },
+              }));
+            }}>Кнопка для команды андроид(routing)</button>
               <br />
               <button className="favorite styled" onClick={() => {
               window.webkit.messageHandlers.initQrScanner.postMessage("");
