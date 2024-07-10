@@ -93,11 +93,16 @@ export default function Title(){
 // }
   
   useEffect(() => {
-    const complete = () => {
+    const complete = (event) => {
         window.removeEventListener('load', complete)
         if (window.webkit) {
           window.webkit.messageHandlers.pageStateHandler.postMessage(JSON.stringify({state: 'READY'}))
-        } else {
+        } else if (window.AndroidWebViewHandler) {
+          const response = event.data;
+          if (response.type === 'JWT_TOKEN_RESPONSE') {
+            localStorage.setItem('loyalty_native_token', response.result);
+          }
+        }else  {
             console.log("webkit or something undefined")
         }
     }
