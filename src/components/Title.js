@@ -170,19 +170,16 @@ export default function Title(){
 
             <button className="favorite android" onClick={() => {
               window
-              .webkit
               .AndroidWebViewHandler
               .sendMessage( JSON.stringify(androidData));
             }}>Войти по ВТБID Android</button>
             <button className="favorite android" onClick={() => {
               window
-              .webkit
               .AndroidWebViewHandler
               .sendMessage( JSON.stringify(dataTrue));
             }}>Автологин true Android</button>
             <button className="favorite android" onClick={() => {
               window
-              .webkit
               .AndroidWebViewHandler
               .sendMessage( JSON.stringify(dataFalse));
             }}>Автологин false Android</button>
