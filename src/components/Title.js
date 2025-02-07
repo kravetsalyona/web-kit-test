@@ -138,6 +138,25 @@ export default function Title(){
             }}>Автологин false</button>
             <br />
             <button className="favorite android" onClick={() => {
+              window
+              .webkit
+              .AndroidWebViewHandler
+              .sendMessage( JSON.stringify(data));
+            }}>Войти по ВТБID</button>
+            <button className="favorite android" onClick={() => {
+              window
+              .webkit
+              .AndroidWebViewHandler
+              .sendMessage( JSON.stringify(dataTrue));
+            }}>Автологин true</button>
+            <button className="favorite android" onClick={() => {
+              window
+              .webkit
+              .AndroidWebViewHandler
+              .sendMessage( JSON.stringify(dataFalse));
+            }}>Автологин false</button>
+            <br />
+            <button className="favorite android" onClick={() => {
               window.AndroidWebViewHandler?.sendMessage( JSON.stringify({ 
                 id: uuidv4(),
                 jsonrpc : '2.0',
