@@ -141,19 +141,19 @@ export default function Title(){
               window
               .webkit
               .AndroidWebViewHandler
-              .sendMessage( JSON.stringify(data));
+              .postMessage( JSON.stringify(data));
             }}>Войти по ВТБID</button>
             <button className="favorite android" onClick={() => {
               window
               .webkit
               .AndroidWebViewHandler
-              .sendMessage( JSON.stringify(dataTrue));
+              .postMessage( JSON.stringify(dataTrue));
             }}>Автологин true</button>
             <button className="favorite android" onClick={() => {
               window
               .webkit
               .AndroidWebViewHandler
-              .sendMessage( JSON.stringify(dataFalse));
+              .postMessage( JSON.stringify(dataFalse));
             }}>Автологин false</button>
             <br />
             <button className="favorite android" onClick={() => {
