@@ -204,8 +204,8 @@ export default function Title() {
   }, []);
 
   const handleThreeDataTypes = async () => {
-    const text = new Blob(["Three Data Types"], { type: "text/plain" });
-    const html = new Blob(["https://ya.ru"], { type: "text/html" });
+    const text = new Blob(["https://ya.ru"], { type: "text/plain" });
+    const html = new Blob(["Three Data Type"], { type: "text/html" });
 
     try {
       await navigator.clipboard.write([
