@@ -204,7 +204,7 @@ export default function Title() {
   }, []);
 
   const handleThreeDataTypes = async () => {
-    const text = new Blob(["https://ya.ru"], { type: "text/plain" });
+    const text = new Blob(["https://ya.ru"], { type: "text/css" });
     const html = new Blob(["Three Data Type"], { type: "text/html" });
 
     try {
