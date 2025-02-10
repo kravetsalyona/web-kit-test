@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import "../styles/title.css";
 // import MyPDF from './public/Nurlan_Saburov_02.pkpass';
 // import chargeSample from './public/Nurlan_Saburov_02.pkpass';
-import image from "../image/death-star.png";
+// import image from "../image/death-star.png";
 import { v4 as uuidv4 } from "uuid";
 
 let androidData = {
@@ -208,14 +208,11 @@ export default function Title() {
     const html = new Blob(["<b>Three Data Types</b>"], { type: "text/html" });
 
     try {
-      const response = await fetch(image);
-      const blob = await response.blob();
-
       await navigator.clipboard.write([
         new ClipboardItem({
           "text/plain": text,
           "text/html": html,
-          "image/png": blob,
+          // "image/png": blob,
         }),
       ]);
       console.log("Данные записаны");
