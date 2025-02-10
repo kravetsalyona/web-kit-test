@@ -243,7 +243,7 @@ export default function Title() {
     try {
       await navigator.clipboard.write([
         new ClipboardItem({
-          "xyz/test": new Blob(["custom data"], { type: "xyz/test" }),
+          "com.mycompany.myapp.mytype": new Blob(["custom data"], { type: "com.mycompany.myapp.mytype" }),
         }),
       ]);
       console.log("Данные записаны");
