@@ -204,8 +204,8 @@ export default function Title() {
   }, []);
 
   const handleThreeDataTypes = async () => {
-    const json = JSON.stringify({message: "Hello"} )
-    const text = new Blob([json], { type: "application/json" });
+    // const json = JSON.stringify({message: "Hello"} )
+    const text = new Blob(["org.w3.web-custom-format.type-1"], { type: "application/octet-stream" });
     const html = new Blob(["Three Data Type"], { type: "text/html" });
 
     try {
