@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 // import { Link } from "react-router-dom";
 import "../styles/title.css";
 // import MyPDF from './public/Nurlan_Saburov_02.pkpass';
@@ -181,17 +181,6 @@ export default function Title() {
   //     window.location.href = window.URL.createObjectURL(blob);
   // }
 
-  const [selectedImage, setSelectedImage] = useState(null);
-
-  const text = new Blob(["Text here"], { type: "text/plain" });
-  const html = new Blob(["HTML here"], { type: "text/html" });
-  const test1 = new Blob(["test1"], {
-    type: "test1",
-  });
-  const test2 = new Blob(["test2"], {
-    type: "test2",
-  });
-
   useEffect(() => {
     const complete = (event) => {
       window.removeEventListener("load", complete);
@@ -216,48 +205,44 @@ export default function Title() {
     }
   }, []);
 
-  const convertImageToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result.split(",")[1]);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
-
-  const handleImageChange = async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      try {
-        const base64 = await convertImageToBase64(file);
-        setSelectedImage(base64);
-        console.log("✅ Изображение загружено и готово к копированию");
-      } catch (err) {
-        console.log(`❌ Ошибка загрузки изображения: ${err.message}`);
-      }
+  const getDataForType = (type) => {
+    switch (type) {
+      case "text/plain":
+        return new Blob(["Text here"], { type: "text/plain" });
+      case "text/html":
+        return new Blob(["HTML here"], { type: "text/html" });
+      case "test1":
+        return new Blob(["test1"], {
+          type: "test1",
+        });
+      case "test2":
+        return new Blob(["test2"], {
+          type: "test2",
+        });
+      case "image/png":
+      case "image/jpeg":
+      case "application/pdf":
+      default:
+        const binaryString = atob(defaultBase64Image);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        return new Blob([bytes], { type });
     }
   };
 
   const handleThreeDataTypes = async () => {
-    const imageBase64 = selectedImage || defaultBase64Image;
-
     try {
       if (!navigator.clipboard) {
         throw new Error("Clipboard API не поддерживается в этом браузере.");
       }
 
-      const binaryString = atob(imageBase64);
-      const bytes = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
-      const imageBlob = new Blob([bytes], { type: "image/png" });
-
       await navigator.clipboard.write([
         new ClipboardItem({
-          "text/plain": text,
-          "text/html": html,
-          "image/png": imageBlob,
+          "text/plain": getDataForType("text/plain"),
+          "text/html": getDataForType("text/html"),
+          "image/png": getDataForType("image/png"),
         }),
       ]);
       console.log("Данные записаны");
@@ -266,14 +251,14 @@ export default function Title() {
     }
   };
 
-  const handleDataArray = async () => {
+  const handleDirectOrder = async () => {
     try {
       await navigator.clipboard.write([
         new ClipboardItem({
-          "text/plain": text,
-          "text/html": html,
-          test1,
-          test2,
+          "text/plain": getDataForType("text/plain"),
+          "text/html": getDataForType("text/html"),
+          test1: getDataForType("test1"),
+          test2: getDataForType("test2"),
         }),
       ]);
       console.log("Данные записаны");
@@ -282,19 +267,57 @@ export default function Title() {
     }
   };
 
-  const handleTestCustomData = async () => {
+  const handleMixedOrder = async () => {
     try {
       await navigator.clipboard.write([
         new ClipboardItem({
-          test2,
-          "text/plain": text,
-          test1,
-          "text/html": html,
+          test2: getDataForType("test2"),
+          "text/plain": getDataForType("text/plain"),
+          test1: getDataForType("test1"),
+          "text/html": getDataForType("text/html"),
         }),
       ]);
       console.log("Данные записаны");
     } catch (err) {
       console.error("Safari блокирует кастомные MIME-типы", err);
+    }
+  };
+
+  const handleSingleType = async (type) => {
+    console.log("handleSingleType", { [type]: getDataForType(type) });
+
+    try {
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          [type]: getDataForType(type),
+        }),
+      ]);
+      console.log("Данные записаны");
+    } catch (err) {
+      console.error("Safari блокирует кастомные MIME-типы", err);
+    }
+  };
+
+  const handleMultipleItem = async () => {
+    try {
+      if (!navigator.clipboard) {
+        throw new Error("Clipboard API не поддерживается в этом браузере.");
+      }
+
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          "text/plain": getDataForType("text/plain"),
+          "text/html": getDataForType("text/html"),
+          "image/png": getDataForType("image/png"),
+        }),
+        new ClipboardItem({
+          "text/plain": getDataForType("text/plain"),
+        }),
+      ]);
+
+      console.log("Данные записаны");
+    } catch (err) {
+      console.error("Ошибка записи:", err);
     }
   };
 
@@ -307,6 +330,8 @@ export default function Title() {
 
     try {
       const clipboardItems = await navigator.clipboard.read();
+      console.log("clipboardItems", clipboardItems);
+
       for (const item of clipboardItems) {
         debugInfo += `Доступные типы данных: ${item.types.join(", ")}\n\n`;
 
@@ -470,22 +495,54 @@ export default function Title() {
 
       <hr style={{ width: "100%" }} />
 
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleImageChange}
-        className="mb-2"
-      />
-
       <button className="3 data types" onClick={handleThreeDataTypes}>
         3 data types
       </button>
-      <button className="Data array" onClick={handleDataArray}>
+      <button className="Data array" onClick={handleDirectOrder}>
         Direct order
       </button>
-      <button className="Test custom data" onClick={handleTestCustomData}>
+      <button className="Test custom data" onClick={handleMixedOrder}>
         Mixed order
       </button>
+
+      <hr style={{ width: "100%" }} />
+
+      <button
+        className="Text/plain"
+        onClick={() => handleSingleType("text/plain")}
+      >
+        Text/plain
+      </button>
+      <button
+        className="Text/html"
+        onClick={() => handleSingleType("text/html")}
+      >
+        Text/html
+      </button>
+      <button
+        className="Image/png"
+        onClick={() => handleSingleType("image/png")}
+      >
+        Image/png
+      </button>
+      <button
+        className="Image/jpeg"
+        onClick={() => handleSingleType("image/jpeg")}
+      >
+        Image/jpeg
+      </button>
+      <button
+        className="Application/pdf"
+        onClick={() => handleSingleType("application/pdf")}
+      >
+        Application/pdf
+      </button>
+      <button className="Multiple Items" onClick={handleMultipleItem}>
+        Multiple Items
+      </button>
+
+      <hr style={{ width: "100%" }} />
+
       <button onClick={handleReadClipboard}>Прочитать буфер обмена</button>
     </>
   );
