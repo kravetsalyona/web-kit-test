@@ -307,11 +307,27 @@ export default function Title() {
       await navigator.clipboard.write([
         new ClipboardItem({
           "text/plain": getDataForType("text/plain"),
-          "text/html": getDataForType("text/html"),
-          "image/png": getDataForType("image/png"),
         }),
         new ClipboardItem({
           "text/plain": getDataForType("text/plain"),
+        }),
+        new ClipboardItem({
+          "text/plain": getDataForType("text/plain"),
+        }),
+        new ClipboardItem({
+          "text/plain": getDataForType("text/plain"),
+        }),
+        new ClipboardItem({
+          "text/plain": getDataForType("text/plain"),
+        }),
+        new ClipboardItem({
+          "text/plain": getDataForType("text/plain"),
+        }),
+        new ClipboardItem({
+          "text/plain": getDataForType("text/plain"),
+        }),
+        new ClipboardItem({
+          "image/png": getDataForType("image/png"),
         }),
       ]);
 
