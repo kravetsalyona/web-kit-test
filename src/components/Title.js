@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 // import { Link } from "react-router-dom";
 import "../styles/title.css";
 // import MyPDF from './public/Nurlan_Saburov_02.pkpass';
 // import chargeSample from './public/Nurlan_Saburov_02.pkpass';
-// import image from "../image/death-star.png";
 import { v4 as uuidv4 } from "uuid";
 
 let androidData = {
@@ -171,6 +170,9 @@ let dataFalse = {
   ],
 };
 
+const defaultBase64Image =
+  "iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVEiJtZZPbBtFFMZ/M7ubXdtdb1xSFyeilBapySVU8h8OoFaooFSqiihIVIpQBKci6KEg9Q6H9kovIHoCIVQJJCKE1ENFjnAgcaSGC6rEnxBwA04Tx43t2FnvDAfjkNibxgHxnWb2e/u992bee7tCa00YFsffekFY+nUzFtjW0LrvjRXrCDIAaPLlW0nHL0SsZtVoaF98mLrx3pdhOqLtYPHChahZcYYO7KvPFxvRl5XPp1sN3adWiD1ZAqD6XYK1b/dvE5IWryTt2udLFedwc1+9kLp+vbbpoDh+6TklxBeAi9TL0taeWpdmZzQDry0AcO+jQ12RyohqqoYoo8RDwJrU+qXkjWtfi8Xxt58BdQuwQs9qC/afLwCw8tnQbqYAPsgxE1S6F3EAIXux2oQFKm0ihMsOF71dHYx+f3NND68ghCu1YIoePPQN1pGRABkJ6Bus96CutRZMydTl+TvuiRW1m3n0eDl0vRPcEysqdXn+jsQPsrHMquGeXEaY4Yk4wxWcY5V/9scqOMOVUFthatyTy8QyqwZ+kDURKoMWxNKr2EeqVKcTNOajqKoBgOE28U4tdQl5p5bwCw7BWquaZSzAPlwjlithJtp3pTImSqQRrb2Z8PHGigD4RZuNX6JYj6wj7O4TFLbCO/Mn/m8R+h6rYSUb3ekokRY6f/YukArN979jcW+V/S8g0eT/N3VN3kTqWbQ428m9/8k0P/1aIhF36PccEl6EhOcAUCrXKZXXWS3XKd2vc/TRBG9O5ELC17MmWubD2nKhUKZa26Ba2+D3P+4/MNCFwg59oWVeYhkzgN/JDR8deKBoD7Y+ljEjGZ0sosXVTvbc6RHirr2reNy1OXd6pJsQ+gqjk8VWFYmHrwBzW/n+uMPFiRwHB2I7ih8ciHFxIkd/3Omk5tCDV1t+2nNu5sxxpDFNx+huNhVT3/zMDz8usXC3ddaHBj1GHj/As08fwTS7Kt1HBTmyN29vdwAw+/wbwLVOJ3uAD1wi/dUH7Qei66PfyuRj4Ik9is+hglfbkbfR3cnZm7chlUWLdwmprtCohX4HUtlOcQjLYCu+fzGJH2QRKvP3UNz8bWk1qMxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=";
+
 export default function Title() {
   //   const downloadCSV (data){
   //     var MIME_TYPE = "application/vnd.apple.pkpass";
@@ -178,6 +180,17 @@ export default function Title() {
   //     var blob = new Blob([data], {type: MIME_TYPE});
   //     window.location.href = window.URL.createObjectURL(blob);
   // }
+
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const text = new Blob(["Text here"], { type: "text/plain" });
+  const html = new Blob(["HTML here"], { type: "text/html" });
+  const test1 = new Blob(["test1"], {
+    type: "test1",
+  });
+  const test2 = new Blob(["test2"], {
+    type: "test2",
+  });
 
   useEffect(() => {
     const complete = (event) => {
@@ -203,17 +216,48 @@ export default function Title() {
     }
   }, []);
 
+  const convertImageToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(",")[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      try {
+        const base64 = await convertImageToBase64(file);
+        setSelectedImage(base64);
+        console.log("✅ Изображение загружено и готово к копированию");
+      } catch (err) {
+        console.log(`❌ Ошибка загрузки изображения: ${err.message}`);
+      }
+    }
+  };
+
   const handleThreeDataTypes = async () => {
-    // const json = JSON.stringify({message: "Hello"} )
-    const text = new Blob(["org.w3.web-custom-format.type-1"], { type: "application/octet-stream" });
-    const html = new Blob(["Three Data Type"], { type: "text/html" });
+    const imageBase64 = selectedImage || defaultBase64Image;
 
     try {
+      if (!navigator.clipboard) {
+        throw new Error("Clipboard API не поддерживается в этом браузере.");
+      }
+
+      const binaryString = atob(imageBase64);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const imageBlob = new Blob([bytes], { type: "image/png" });
+
       await navigator.clipboard.write([
         new ClipboardItem({
           "text/plain": text,
           "text/html": html,
-          // "image/png": blob,
+          "image/png": imageBlob,
         }),
       ]);
       console.log("Данные записаны");
@@ -223,15 +267,13 @@ export default function Title() {
   };
 
   const handleDataArray = async () => {
-    const array = ["black", "white", "green"];
-    const text = array.join(", ");
-
     try {
-      const blob = new Blob([text], { type: "text/plain" });
-
       await navigator.clipboard.write([
         new ClipboardItem({
-          "text/plain": blob,
+          "text/plain": text,
+          "text/html": html,
+          test1,
+          test2,
         }),
       ]);
       console.log("Данные записаны");
@@ -244,12 +286,64 @@ export default function Title() {
     try {
       await navigator.clipboard.write([
         new ClipboardItem({
-          "com.mycompany.myapp.mytype": new Blob(["custom data"], { type: "com.mycompany.myapp.mytype" }),
+          test2,
+          "text/plain": text,
+          test1,
+          "text/html": html,
         }),
       ]);
       console.log("Данные записаны");
     } catch (err) {
       console.error("Safari блокирует кастомные MIME-типы", err);
+    }
+  };
+
+  const isCustomTypeData = (data) => {
+    return data && typeof data === "object" && "type" in data;
+  };
+
+  const handleReadClipboard = async () => {
+    let debugInfo = "Содержимое буфера обмена:\n\n";
+
+    try {
+      const clipboardItems = await navigator.clipboard.read();
+      for (const item of clipboardItems) {
+        debugInfo += `Доступные типы данных: ${item.types.join(", ")}\n\n`;
+
+        for (const type of item.types) {
+          const blob = await item.getType(type);
+
+          if (type.startsWith("text/")) {
+            const text = await blob.text();
+            debugInfo += `${type}:\n`;
+
+            try {
+              const jsonData = JSON.parse(text);
+              if (isCustomTypeData(jsonData)) {
+                debugInfo += "Структурированные данные:\n";
+                debugInfo += JSON.stringify(jsonData, null, 2);
+              } else if (Array.isArray(jsonData)) {
+                debugInfo += "Массив данных:\n";
+                debugInfo += JSON.stringify(jsonData, null, 2);
+              } else if (typeof jsonData === "object") {
+                debugInfo += "Объект данных:\n";
+                debugInfo += JSON.stringify(jsonData, null, 2);
+              }
+            } catch {
+              debugInfo += text;
+            }
+            debugInfo += "\n\n";
+          } else if (type.startsWith("image/")) {
+            debugInfo += `${type}:\n[Binary Image Data]\n\n`;
+          } else {
+            debugInfo += `${type}:\n[Binary Data]\n\n`;
+          }
+        }
+      }
+
+      console.log("ЧТЕНИЕ ДАННЫХ:\n", debugInfo);
+    } catch (err) {
+      console.log(`❌ Ошибка чтения буфера обмена: ${err.message}`);
     }
   };
 
@@ -376,15 +470,23 @@ export default function Title() {
 
       <hr style={{ width: "100%" }} />
 
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleImageChange}
+        className="mb-2"
+      />
+
       <button className="3 data types" onClick={handleThreeDataTypes}>
         3 data types
       </button>
       <button className="Data array" onClick={handleDataArray}>
-        Data array
+        Direct order
       </button>
       <button className="Test custom data" onClick={handleTestCustomData}>
-        Test custom data
+        Mixed order
       </button>
+      <button onClick={handleReadClipboard}>Прочитать буфер обмена</button>
     </>
   );
 }
