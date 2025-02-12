@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 // import { Link } from "react-router-dom";
 import "../styles/title.css";
 // import MyPDF from './public/Nurlan_Saburov_02.pkpass';
@@ -181,6 +181,8 @@ export default function Title() {
   //     window.location.href = window.URL.createObjectURL(blob);
   // }
 
+  const [inputValue, setInputValue] = useState("");
+
   useEffect(() => {
     const complete = (event) => {
       window.removeEventListener("load", complete);
@@ -284,8 +286,6 @@ export default function Title() {
   };
 
   const handleSingleType = async (type) => {
-    console.log("handleSingleType", { [type]: getDataForType(type) });
-
     try {
       await navigator.clipboard.write([
         new ClipboardItem({
@@ -298,38 +298,37 @@ export default function Title() {
     }
   };
 
+  const handleMultipleChange = (event) => {
+    const multipleData = event.target.value;
+
+    if (/^[01]*$/.test(multipleData)) {
+      setInputValue(multipleData.slice(0, 8));
+    }
+  };
+
   const handleMultipleItem = async () => {
+    const inputArray = inputValue.split("");
+    const multipleArray = inputArray.map((char, index) => {
+      if (char === "1") {
+        return new ClipboardItem({
+          "image/png": getDataForType("image/png"),
+        });
+      } else if (char === "0") {
+        return new ClipboardItem({
+          "text/plain": getDataForType("text/plain"),
+        });
+      }
+
+      return null;
+    });
+
     try {
       if (!navigator.clipboard) {
         throw new Error("Clipboard API не поддерживается в этом браузере.");
       }
 
-      await navigator.clipboard.write([
-        new ClipboardItem({
-          "text/plain": getDataForType("text/plain"),
-        }),
-        new ClipboardItem({
-          "text/plain": getDataForType("text/plain"),
-        }),
-        new ClipboardItem({
-          "text/plain": getDataForType("text/plain"),
-        }),
-        new ClipboardItem({
-          "text/plain": getDataForType("text/plain"),
-        }),
-        new ClipboardItem({
-          "text/plain": getDataForType("text/plain"),
-        }),
-        new ClipboardItem({
-          "text/plain": getDataForType("text/plain"),
-        }),
-        new ClipboardItem({
-          "text/plain": getDataForType("text/plain"),
-        }),
-        new ClipboardItem({
-          "image/png": getDataForType("image/png"),
-        }),
-      ]);
+      await navigator.clipboard.write(multipleArray);
+      setInputValue("");
 
       console.log("Данные записаны");
     } catch (err) {
@@ -346,7 +345,6 @@ export default function Title() {
 
     try {
       const clipboardItems = await navigator.clipboard.read();
-      console.log("clipboardItems", clipboardItems);
 
       for (const item of clipboardItems) {
         debugInfo += `Доступные типы данных: ${item.types.join(", ")}\n\n`;
@@ -553,6 +551,17 @@ export default function Title() {
       >
         Application/pdf
       </button>
+
+      <hr style={{ width: "100%" }} />
+
+      <input
+        type="text"
+        value={inputValue}
+        onChange={handleMultipleChange}
+        placeholder="Введите 8 цифр (1 или 0)"
+        maxLength={8}
+      />
+
       <button className="Multiple Items" onClick={handleMultipleItem}>
         Multiple Items
       </button>
