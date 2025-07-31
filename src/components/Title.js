@@ -496,6 +496,112 @@ export default function Title() {
     }
   };
 
+  const handleCopyAndRedirectToAppStore = () => {
+    // 7 текстовых элементов
+    const clipboardItems = [
+        new ClipboardItem({
+            'text/plain': new Blob(['Текст 1'], { type: 'text/plain' })
+        }),
+        new ClipboardItem({
+            'text/plain': new Blob(['Текст 2'], { type: 'text/plain' })
+        }),
+        new ClipboardItem({
+            'text/plain': new Blob(['Текст 3'], { type: 'text/plain' })
+        }),
+        new ClipboardItem({
+            'text/plain': new Blob(['Текст 4'], { type: 'text/plain' })
+        }),
+        new ClipboardItem({
+            'text/plain': new Blob(['Текст 5'], { type: 'text/plain' })
+        }),
+        new ClipboardItem({
+            'text/plain': new Blob(['Текст 6'], { type: 'text/plain' })
+        }),
+        new ClipboardItem({
+            'text/plain': new Blob(['Текст 7'], { type: 'text/plain' })
+        })
+    ];
+
+    // Создаем простое PNG изображение через canvas
+    const canvas = document.createElement('canvas');
+    canvas.width = 100;
+    canvas.height = 100;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#4a90e2';
+    ctx.fillRect(0, 0, 100, 100);
+    ctx.fillStyle = '#fff';
+    ctx.font = '20px Arial';
+    ctx.fillText('IMG', 25, 60);
+
+    canvas.toBlob((blob) => {
+        clipboardItems.push(
+            new ClipboardItem({
+                'image/png': blob
+            })
+        );
+
+        // Копируем все элементы в буфер обмена
+        navigator.clipboard.write(clipboardItems)
+            .finally(() => {
+                // После копирования — переход по ссылке
+                window.location.href = 'https://apps.apple.com/app/id1665892408';
+            });
+    }, 'image/png');
+  };
+
+  const handleCopyAndOpenDeeplink = () => {
+    // 7 текстовых элементов
+    const clipboardItems = [
+        new ClipboardItem({
+            'text/plain': new Blob(['Текст 1'], { type: 'text/plain' })
+        }),
+        new ClipboardItem({
+            'text/plain': new Blob(['Текст 2'], { type: 'text/plain' })
+        }),
+        new ClipboardItem({
+            'text/plain': new Blob(['Текст 3'], { type: 'text/plain' })
+        }),
+        new ClipboardItem({
+            'text/plain': new Blob(['Текст 4'], { type: 'text/plain' })
+        }),
+        new ClipboardItem({
+            'text/plain': new Blob(['Текст 5'], { type: 'text/plain' })
+        }),
+        new ClipboardItem({
+            'text/plain': new Blob(['Текст 6'], { type: 'text/plain' })
+        }),
+        new ClipboardItem({
+            'text/plain': new Blob(['Текст 7'], { type: 'text/plain' })
+        })
+    ];
+
+    // Создаем простое PNG изображение через canvas
+    const canvas = document.createElement('canvas');
+    canvas.width = 100;
+    canvas.height = 100;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#4a90e2';
+    ctx.fillRect(0, 0, 100, 100);
+    ctx.fillStyle = '#fff';
+    ctx.font = '20px Arial';
+    ctx.fillText('IMG', 25, 60);
+
+    canvas.toBlob((blob) => {
+        clipboardItems.push(
+            new ClipboardItem({
+                'image/png': blob
+            })
+        );
+
+        // Копируем все элементы в буфер обмена
+        navigator.clipboard.write(clipboardItems)
+            .finally(() => {
+                // После копирования — переход по диплинку
+                window.location.href = 'loona://loonabrowser.ru/i/ultraCamera';
+            });
+    }, 'image/png');
+  };  
+
   return (
     <>
       <button
@@ -719,6 +825,12 @@ export default function Title() {
       <hr style={{ width: "100%" }} />
 
       <button onClick={handleReadClipboard}>Прочитать буфер обмена</button>
+
+      <hr style={{ width: "100%" }} />
+      
+      <button onClick={handleCopyAndRedirectToAppStore}>Скопировать и открыть апп стор</button>
+
+      <button onClick={handleCopyAndOpenDeeplink}>Скопировать и открыть диплинк Луны</button>
     </>
   );
 }
