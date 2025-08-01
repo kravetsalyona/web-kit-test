@@ -291,6 +291,17 @@ export default function Title() {
   //     window.location.href = window.URL.createObjectURL(blob);
   // }
 
+  // Константы для App Store
+  const APP_STORE_URL = 'https://apps.apple.com/app/id1665892408';
+
+  // Конфигурация для clipboard items
+  const CLIPBOARD_CONFIG = {
+    textItems: 7,
+    imageItems: 1,
+    textType: "text/plain",
+    imageType: "image/png"
+  };
+
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
@@ -496,49 +507,65 @@ export default function Title() {
     }
   };
 
-  const handleCopyAndRedirectToAppStore = async () => {
-    // 7 текстовых и 1 картинка элементов
-    const clipboardItems = [
-        new ClipboardItem({
-          "text/plain": getDataForType("text/plain"),
-        }),
-        new ClipboardItem({
-            "text/plain": getDataForType("text/plain"),
-        }),
-        new ClipboardItem({
-          "text/plain": getDataForType("text/plain"),
-        }),
-        new ClipboardItem({
-          "text/plain": getDataForType("text/plain"),
-        }),
-        new ClipboardItem({
-          "text/plain": getDataForType("text/plain"),
-        }),
-        new ClipboardItem({
-          "text/plain": getDataForType("text/plain"),
-        }),
-        new ClipboardItem({
-          "text/plain": getDataForType("text/plain"),
-        }),
-        new ClipboardItem({
-          "image/png": getDataForType("image/png"),
-        })
-    ];
+  const getDataForTypeIntervision= (type) => {
+    switch (type) {
+      case "text/plain":
+        return new Blob(["Text here"], { type: "text/plain" });
+      case "image/png":
+      default:
+        const binaryString = atob(defaultBase64Image);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        return new Blob([bytes], { type });
+    }
+  };
 
+  //Создает массив ClipboardItem для копирования в буфер обмена
+  const createClipboardItems = () => {
+    const items = [];
+    
+    // Добавляем текстовые элементы
+    for (let i = 0; i < CLIPBOARD_CONFIG.textItems; i++) {
+      items.push(
+        new ClipboardItem({
+          [CLIPBOARD_CONFIG.textType]: getDataForTypeIntervision(CLIPBOARD_CONFIG.textType),
+        })
+      );
+    }
+    // Добавляем изображение
+    items.push(
+      new ClipboardItem({
+        [CLIPBOARD_CONFIG.imageType]: getDataForTypeIntervision(CLIPBOARD_CONFIG.imageType),
+      })
+    );
+    
+    return items;
+  };
+  
+  //Открывает App Store в новой вкладке
+  const openAppStore = () => {
+    window.open(APP_STORE_URL, '_blank');
+  };
+
+  //Копирует данные в буфер обмена и перенаправляет в App Store
+  const handleCopyAndRedirectToAppStore = async () => {
     try {
       if (!navigator.clipboard) {
         throw new Error("Clipboard API не поддерживается в этом браузере.");
       }
 
+      const clipboardItems = createClipboardItems();
       await navigator.clipboard.write(clipboardItems);
-      // После копирования — переход по ссылке
-      window.location.href = 'https://apps.apple.com/app/id1665892408';
-
-      console.log("Данные записаны");
-    } catch (err) {
-      console.error("Ошибка записи:", err);
-      // Если не удалось скопировать, все равно переходим по ссылке
-      window.location.href = 'https://apps.apple.com/app/id1665892408';
+      
+      console.log("Данные успешно скопированы в буфер обмена");
+      openAppStore();
+      
+    } catch (error) {
+      console.error("Ошибка при копировании данных:", error);
+      // Если не удалось скопировать, все равно переходим в App Store
+      openAppStore();
     }
   };
 
@@ -768,7 +795,7 @@ export default function Title() {
 
       <hr style={{ width: "100%" }} />
       
-      <button onClick={handleCopyAndRedirectToAppStore}>Скопировать и открыть апп стор</button>
+      <button onClick={handleCopyAndRedirectToAppStore}>Перейти</button>
 
       
     </>
