@@ -291,8 +291,13 @@ export default function Title() {
   //     window.location.href = window.URL.createObjectURL(blob);
   // }
 
-  // Константы для App Store
-  const APP_STORE_URL = 'https://apps.apple.com/app/id1665892408';
+  const ANDROID = "android";
+  const IOS = "ios";
+
+  const APP_STORE_URL = 'https://apps.apple.com/app/id1665892408'
+  const GOOGLE_PLAY_URL = 'https://play.google.com/store/apps/details?id=com.vtb.loyalty';
+  const APP_GALLERY_URL = 'https://appgallery.huawei.com/#/app/C104090933';
+  const SAMSUNG_GALAXY_STORE_URL = 'https://galaxy.store/apps/com.vtb.loyalty';
 
   // Конфигурация для clipboard items
   const CLIPBOARD_CONFIG = {
@@ -427,32 +432,48 @@ export default function Title() {
     }
   };
 
+  /**
+   * Создает и записывает в буфер обмена несколько элементов разных типов
+   * на основе последовательности из нулей и единиц
+   */
   const handleMultipleItem = async () => {
+    // Разбиваем введенную строку на массив символов
     const inputArray = inputValue.split("");
+    
+    // Создаем массив ClipboardItem на основе каждого символа
     const multipleArray = inputArray.map((char, index) => {
+      // Если символ "1" - создаем элемент с изображением PNG
       if (char === "1") {
         return new ClipboardItem({
           "image/png": getDataForType("image/png"),
         });
-      } else if (char === "0") {
+      } 
+      // Если символ "0" - создаем элемент с текстом
+      else if (char === "0") {
         return new ClipboardItem({
           "text/plain": getDataForType("text/plain"),
         });
       }
 
+      // Возвращаем null для недопустимых символов
       return null;
     });
 
     try {
+      // Проверяем поддержку Clipboard API
       if (!navigator.clipboard) {
         throw new Error("Clipboard API не поддерживается в этом браузере.");
       }
 
+      // Записываем массив элементов в буфер обмена
       await navigator.clipboard.write(multipleArray);
+      
+      // Очищаем поле ввода после успешной записи
       setInputValue("");
 
       console.log("Данные записаны");
     } catch (err) {
+      // Логируем ошибку при неудачной записи
       console.error("Ошибка записи:", err);
     }
   };
@@ -544,13 +565,34 @@ export default function Title() {
     return items;
   };
   
-  //Открывает App Store в новой вкладке
-  const openAppStore = () => {
-    window.open(APP_STORE_URL, '_blank');
+  //Проверяет,  текущую платформу
+  function getCurrentPlatform() {
+    if (navigator.userAgent.indexOf('Sapphire') > -1) {
+      if (navigator.userAgent.indexOf('Android') > -1) {
+        return ANDROID;
+      }
+  
+      return IOS;
+    }
+  }
+
+  //Открывает Store в новой вкладке
+  const openStore = (platform) => {
+    switch (platform) {
+      case ANDROID:
+        window?.open(GOOGLE_PLAY_URL, '_blank');
+        break;
+      case IOS:
+        window?.open(APP_STORE_URL, '_blank');
+        break;
+      default:
+        console.error('Ни одна платформа не найдена для отправки открытия в новой вкладке.');
+    }
   };
 
   //Копирует данные в буфер обмена и перенаправляет в App Store
   const handleCopyAndRedirectToAppStore = async () => {
+    const currentPlatform = getCurrentPlatform();
     try {
       if (!navigator.clipboard) {
         throw new Error("Clipboard API не поддерживается в этом браузере.");
@@ -560,12 +602,12 @@ export default function Title() {
       await navigator.clipboard.write(clipboardItems);
       
       console.log("Данные успешно скопированы в буфер обмена");
-      openAppStore();
+      openStore(currentPlatform);
       
     } catch (error) {
       console.error("Ошибка при копировании данных:", error);
       // Если не удалось скопировать, все равно переходим в App Store
-      openAppStore();
+      openStore(currentPlatform);
     }
   };
 
