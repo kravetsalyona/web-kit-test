@@ -565,15 +565,17 @@ export default function Title() {
     return items;
   };
   
-  //Проверяет,  текущую платформу
+  // Определяет текущую платформу по userAgent (без побочных эффектов)
   function getCurrentPlatform() {
     if (window.navigator.userAgent.includes('iPhone')){
       window?.open(APP_STORE_URL, '_blank');
       return IOS;
-    } else if (window.navigator.userAgent.includes('Mac')) {
+    }
+    if (window.navigator.userAgent.includes('Mac')) {
       console.error('это мак');
       return ANDROID;
     }
+    return undefined;
   }
 
   //Открывает Store в новой вкладке
