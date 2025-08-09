@@ -568,7 +568,6 @@ export default function Title() {
   // Определяет текущую платформу по userAgent (без побочных эффектов)
   function getCurrentPlatform() {
     if (window.navigator.userAgent.includes('iPhone')){
-      window?.open(APP_STORE_URL, '_blank');
       return IOS;
     }
     if (window.navigator.userAgent.includes('Mac')) {
