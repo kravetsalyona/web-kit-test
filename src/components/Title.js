@@ -570,6 +570,7 @@ export default function Title() {
     if (window.navigator.userAgent.includes('iPhone')){
       return IOS;
     } else if (window.navigator.userAgent.includes('Mac')) {
+      console.error('это мак window.navigator.userAgent');
       return ANDROID;
     }
   }
