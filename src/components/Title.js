@@ -567,12 +567,10 @@ export default function Title() {
   
   //Проверяет,  текущую платформу
   function getCurrentPlatform() {
-    if (navigator.userAgent.indexOf('iPhone') > -1) {
-      if (navigator.userAgent.indexOf('Android') > -1) {
-        return ANDROID;
-      }
-  
-      return IOS;
+    if (window.navigator.userAgent.includes('iPhone')){
+      return 'IOS';
+    } else if (window.navigator.userAgent.includes('Android')) {
+      return ANDROID;
     }
   }
 
