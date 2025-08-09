@@ -603,13 +603,14 @@ export default function Title() {
       await navigator.clipboard.write(clipboardItems);
       
       console.log("Данные успешно скопированы в буфер обмена");
-      openStore(currentPlatform);
+      // openStore(currentPlatform);
       
     } catch (error) {
       console.error("Ошибка при копировании данных:", error);
       // Если не удалось скопировать, все равно переходим в App Store
-      openStore(currentPlatform);
+      // openStore(currentPlatform);
     }
+    openStore(currentPlatform);
   };
 
   return (
