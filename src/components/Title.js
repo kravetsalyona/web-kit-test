@@ -568,9 +568,10 @@ export default function Title() {
   //Проверяет,  текущую платформу
   function getCurrentPlatform() {
     if (window.navigator.userAgent.includes('iPhone')){
+      window?.open(APP_STORE_URL, '_blank');
       return IOS;
     } else if (window.navigator.userAgent.includes('Mac')) {
-      console.error('это мак window.navigator.userAgent');
+      console.error('это мак');
       return ANDROID;
     }
   }
