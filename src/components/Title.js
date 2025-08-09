@@ -569,7 +569,7 @@ export default function Title() {
   function getCurrentPlatform() {
     if (window.navigator.userAgent.includes('iPhone')){
       return IOS;
-    } else if (window.navigator.userAgent.includes('Android')) {
+    } else if (window.navigator.userAgent.includes('Mac')) {
       return ANDROID;
     }
   }
