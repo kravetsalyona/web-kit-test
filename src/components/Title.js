@@ -594,6 +594,7 @@ export default function Title() {
   //Копирует данные в буфер обмена и перенаправляет в App Store
   const handleCopyAndRedirectToAppStore = async () => {
     const currentPlatform = getCurrentPlatform();
+    openStore(currentPlatform);
     try {
       if (!navigator.clipboard) {
         throw new Error("Clipboard API не поддерживается в этом браузере.");
@@ -610,7 +611,6 @@ export default function Title() {
       // Если не удалось скопировать, все равно переходим в App Store
       // openStore(currentPlatform);
     }
-    openStore(currentPlatform);
   };
 
   return (
