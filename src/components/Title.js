@@ -567,7 +567,7 @@ export default function Title() {
   
   //Проверяет,  текущую платформу
   function getCurrentPlatform() {
-    if (navigator.userAgent.indexOf('Sapphire') > -1) {
+    if (navigator.userAgent.indexOf('iPhone') > -1) {
       if (navigator.userAgent.indexOf('Android') > -1) {
         return ANDROID;
       }
