@@ -291,12 +291,13 @@ export default function Title() {
   //     window.location.href = window.URL.createObjectURL(blob);
   // }
 
-  const ANDROID = "android";
   const IOS = "ios";
+  const ANDROID = "android";
 
   const APP_STORE_URL = 'https://apps.apple.com/app/id1665892408'
-  const GOOGLE_PLAY_URL = 'https://play.google.com/store/apps/details?id=com.vtb.loyalty';
+  const RU_STORE_STORE_URL = 'https://www.rustore.ru/'
   const APP_GALLERY_URL = 'https://appgallery.huawei.com/#/app/C104090933';
+  const GOOGLE_PLAY_URL = 'https://play.google.com/store/apps/details?id=com.vtb.loyalty';
   const SAMSUNG_GALAXY_STORE_URL = 'https://galaxy.store/apps/com.vtb.loyalty';
 
   // Конфигурация для clipboard items
@@ -564,30 +565,74 @@ export default function Title() {
     
     return items;
   };
+
   
-  // Определяет текущую платформу по userAgent (без побочных эффектов)
-  function getCurrentPlatform() {
-    if (window.navigator.userAgent.includes('iPhone')){
+  // Определяет русская ли локаль
+  const isRuLocale = () => {
+    const userLocale = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
+    const normalizeUserLocale = v => (v || '').toLowerCase().replace('_','-');
+    const locale = normalizeUserLocale(userLocale);
+    return locale === 'ru-ru' || locale.startsWith('ru')
+  };
+
+
+  // Определяет текущую платформу по userAgent
+  const getCurrentPlatform =() => {
+    const ua = window?.navigator?.userAgent || '';
+    if (ua.includes('iPhone')){
       return IOS;
     }
-    if (window.navigator.userAgent.includes('Mac')) {
-      console.error('это мак');
+    if (ua.includes('Android')) {
       return ANDROID;
     }
     return undefined;
-  }
+  };
 
-  //Открывает Store в новой вкладке
+  // Формирует последовательность ссылок для Android по правилам
+  const getAndroidUrlsBySpec = () => {
+    const urls = [];
+    const ua = window?.navigator?.userAgent || '';
+    // 1) Если локаль ru-ru → RuStore
+    if (isRuLocale()) {
+      urls.push(RU_STORE_STORE_URL);
+    }
+    // 2) Если Huawei/Honor → AppGallery
+    if (/huawei|honor|hmscore/i.test(ua)) {
+      urls.push(APP_GALLERY_URL);
+    }
+    if (/samsungbrowser|sm-|samsung/i.test(ua)) {
+      urls.push(SAMSUNG_GALAXY_STORE_URL);
+    }
+    // 3) По умолчанию → Google Play
+    urls.push(GOOGLE_PLAY_URL);
+    // Убираем дубликаты, сохраняя порядок
+    return Array.from(new Set(urls));
+  };
+
+  // Пошаговое открытие ссылок с задержкой 500 мс, если предыдущая не открылась
+  const openSequentiallyWithDelay = (urls, index = 0) => {
+    if (!urls || index >= urls.length) return;
+    setTimeout(() => {
+      const opened = window?.open(urls[index], '_blank');
+      if (!opened) {
+        openSequentiallyWithDelay(urls, index + 1);
+      }
+    }, 500);
+  };
+
+  //Открывает Store в новой вкладке с учетом платформы и правил
   const openStore = (platform) => {
     switch (platform) {
-      case ANDROID:
-        window?.open(GOOGLE_PLAY_URL, '_blank');
-        break;
       case IOS:
         window?.open(APP_STORE_URL, '_blank');
         break;
+      case ANDROID:
+        const candidates = getAndroidUrlsBySpec();
+        console.log(candidates, 'ссылки в специальном порядке, которые буду пробовать открывать');
+        openSequentiallyWithDelay(candidates,0);
+        break;
       default:
-        console.error('Ни одна платформа не найдена для отправки открытия в новой вкладке.');
+        console.error('Нужная платформа не найдена для отправки открытия в новой вкладке.');
     }
   };
 
