@@ -295,10 +295,9 @@ export default function Title() {
   const ANDROID = "android";
 
   const APP_STORE_URL = 'https://apps.apple.com/app/id1665892408'
-  const RU_STORE_STORE_URL = 'https://www.rustore.ru/'
-  const APP_GALLERY_URL = 'https://appgallery.huawei.com/#/app/C104090933';
-  const GOOGLE_PLAY_URL = 'https://play.google.com/store/apps/details?id=com.vtb.loyalty';
-  const SAMSUNG_GALAXY_STORE_URL = 'https://galaxy.store/apps/com.vtb.loyalty';
+  const RU_STORE_URL = 'https://redirect.appmetrica.yandex.com/serve/822075885539630369'
+  const APP_GALLERY_URL = 'https://redirect.appmetrica.yandex.com/serve/29442355803275003';
+  const GOOGLE_PLAY_URL = 'https://redirect.appmetrica.yandex.com/serve/1182363862087833659';
 
   // Конфигурация для clipboard items
   const CLIPBOARD_CONFIG = {
@@ -594,14 +593,11 @@ export default function Title() {
     const ua = window?.navigator?.userAgent || '';
     // 1) Если локаль ru-ru → RuStore
     if (isRuLocale()) {
-      urls.push(RU_STORE_STORE_URL);
+      urls.push(RU_STORE_URL);
     }
     // 2) Если Huawei/Honor → AppGallery
     if (/huawei|honor|hmscore/i.test(ua)) {
       urls.push(APP_GALLERY_URL);
-    }
-    if (/samsungbrowser|sm-|samsung/i.test(ua)) {
-      urls.push(SAMSUNG_GALAXY_STORE_URL);
     }
     // 3) По умолчанию → Google Play
     urls.push(GOOGLE_PLAY_URL);
