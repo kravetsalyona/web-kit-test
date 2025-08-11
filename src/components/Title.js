@@ -531,7 +531,7 @@ export default function Title() {
   const getDataForTypeIntervision= (type) => {
     switch (type) {
       case "text/plain":
-        return new Blob(["Text here"], { type: "text/plain" });
+        return new Blob(["TG9vbmFJbnRlclZpZXc="], { type: "text/plain" });
       case "image/png":
       default:
         const binaryString = atob(defaultBase64Image);
