@@ -633,7 +633,7 @@ export default function Title() {
   };
 
   //Копирует данные в буфер обмена и перенаправляет в App Store
-  const handleCopyAndRedirectToAppStore = async () => {
+  const handleCopyAndRedirectToStore = async () => {
     const currentPlatform = getCurrentPlatform();
     openStore(currentPlatform);
     try {
@@ -877,7 +877,7 @@ export default function Title() {
 
       <hr style={{ width: "100%" }} />
       
-      <button onClick={handleCopyAndRedirectToAppStore}>Перейти</button>
+      <button onClick={handleCopyAndRedirectToStore}>Перейти</button>
 
       
     </>
