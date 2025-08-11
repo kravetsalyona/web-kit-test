@@ -632,7 +632,7 @@ export default function Title() {
     }
   };
 
-  //Копирует данные в буфер обмена и перенаправляет в App Store
+  //Копирует данные в буфер обмена и перенаправляет в Store
   const handleCopyAndRedirectToStore = async () => {
     const currentPlatform = getCurrentPlatform();
     openStore(currentPlatform);
