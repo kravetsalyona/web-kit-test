@@ -528,10 +528,36 @@ export default function Title() {
     }
   };
 
-  const getDataForTypeIntervision= (type) => {
+  async function copyTextAndroidOneItem() {
+    const text = 'Text Here Android';
+  
+    try {
+      if (window.ClipboardItem && navigator.clipboard?.write) {
+        const blob = new Blob([text], { type: 'text/plain' });
+        const item = new ClipboardItem({ 'text/plain': blob });
+        await navigator.clipboard.write([item]);
+        return;
+      }
+      // Проще: если writeText доступен
+      await navigator.clipboard.writeText(text);
+    } catch (_) {
+      // Старые/ограниченные движки (WebView)
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+  }
+
+
+  const getDataForTypeIntervisionIos= (type) => {
     switch (type) {
       case "text/plain":
-        return new Blob(["Text here"], { type: "text/plain" });
+        return new Blob(["Text here Ios"], { type: "text/plain" });
       case "image/png":
       default:
         const binaryString = atob(defaultBase64Image);
@@ -551,14 +577,14 @@ export default function Title() {
     for (let i = 0; i < CLIPBOARD_CONFIG.textItems; i++) {
       items.push(
         new ClipboardItem({
-          [CLIPBOARD_CONFIG.textType]: getDataForTypeIntervision(CLIPBOARD_CONFIG.textType),
+          [CLIPBOARD_CONFIG.textType]: getDataForTypeIntervisionIos(CLIPBOARD_CONFIG.textType),
         })
       );
     }
     // Добавляем изображение
     items.push(
       new ClipboardItem({
-        [CLIPBOARD_CONFIG.imageType]: getDataForTypeIntervision(CLIPBOARD_CONFIG.imageType),
+        [CLIPBOARD_CONFIG.imageType]: getDataForTypeIntervisionIos(CLIPBOARD_CONFIG.imageType),
       })
     );
     
@@ -591,12 +617,13 @@ export default function Title() {
   const getAndroidUrlsBySpec = () => {
     const urls = [];
     const ua = window?.navigator?.userAgent || '';
+    const currentPlatform = getCurrentPlatform();
     // 1) Если Huawei/Honor → AppGallery
-    if (/huawei|honor|hmscore/i.test(ua)) {
+    if (/huawei|honor|hmscore/i.test(ua) && currentPlatform === ANDROID) {
       urls.push(APP_GALLERY_URL);
     }
     // 2) Если локаль ru-ru → RuStore
-    if (isRuLocale()) {
+    if (isRuLocale() && currentPlatform === ANDROID) {
       urls.push(RU_STORE_URL);
     }
     // 3) По умолчанию → Google Play
@@ -640,9 +667,13 @@ export default function Title() {
       if (!navigator.clipboard) {
         throw new Error("Clipboard API не поддерживается в этом браузере.");
       }
-
-      const clipboardItems = createClipboardItems();
-      await navigator.clipboard.write(clipboardItems);
+      if(currentPlatform === ANDROID){
+        await copyTextAndroidOneItem();
+      } else if(currentPlatform === IOS){
+        // TODO  не работает копирование IOS
+        const clipboardItems = createClipboardItems();
+        await navigator.clipboard.write(clipboardItems);
+      }
       
       console.log("Данные успешно скопированы в буфер обмена");
       
