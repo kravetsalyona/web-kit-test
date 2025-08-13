@@ -531,7 +531,7 @@ export default function Title() {
   const getDataForTypeIntervision= (type) => {
     switch (type) {
       case "text/plain":
-        return new Blob(["TG9vbmFJbnRlclZpZXc="], { type: "text/plain" });
+        return new Blob(["Text here"], { type: "text/plain" });
       case "image/png":
       default:
         const binaryString = atob(defaultBase64Image);
@@ -591,13 +591,13 @@ export default function Title() {
   const getAndroidUrlsBySpec = () => {
     const urls = [];
     const ua = window?.navigator?.userAgent || '';
-    // 1) Если локаль ru-ru → RuStore
-    if (isRuLocale()) {
-      urls.push(RU_STORE_URL);
-    }
-    // 2) Если Huawei/Honor → AppGallery
+    // 1) Если Huawei/Honor → AppGallery
     if (/huawei|honor|hmscore/i.test(ua)) {
       urls.push(APP_GALLERY_URL);
+    }
+    // 2) Если локаль ru-ru → RuStore
+    if (isRuLocale()) {
+      urls.push(RU_STORE_URL);
     }
     // 3) По умолчанию → Google Play
     urls.push(GOOGLE_PLAY_URL);
