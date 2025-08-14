@@ -294,6 +294,7 @@ export default function Title() {
   const IOS = "ios";
   const ANDROID = "android";
 
+  const APP_STORE = "app_store";
   const RU_STORE = "ru_store";
   const APP_GALLERY = "app_gallery";
   const GOOGLE_PLAY = "google_play";
@@ -651,7 +652,9 @@ export default function Title() {
   const openStore = (platform, store) => {
     switch (platform) {
       case IOS:
+        if (store ===  APP_STORE) {
         window?.open(APP_STORE_URL, '_blank');
+        }
         break;
       case ANDROID:
         // const candidates = getAndroidUrlsBySpec();
@@ -677,7 +680,7 @@ export default function Title() {
   //Копирует данные в буфер обмена и перенаправляет в Store
   const handleCopyAndRedirectToStore = async (store) => {
     const currentPlatform = getCurrentPlatform();
-    openStore(currentPlatform);
+    openStore(currentPlatform, store);
     try {
       if (!navigator.clipboard) {
         throw new Error("Clipboard API не поддерживается в этом браузере.");
@@ -933,7 +936,7 @@ export default function Title() {
 
       <hr style={{ width: "100%" }} />
       
-      <button onClick={handleCopyAndRedirectToStore}>Перейти</button>
+      <button onClick={() => handleCopyAndRedirectToStore(APP_STORE)}>Перейти</button>
 
       <hr style={{ width: "100%" }} />
       
