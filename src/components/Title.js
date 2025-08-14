@@ -936,20 +936,18 @@ export default function Title() {
 
       <hr style={{ width: "100%" }} />
       
-      <button onClick={() => handleCopyAndRedirectToStore(APP_STORE)}>Перейти</button>
+      {getCurrentPlatform() === IOS && <button onClick={() => handleCopyAndRedirectToStore(APP_STORE)}>Перейти</button>}
+      {getCurrentPlatform() === ANDROID && 
+      <button onClick={() => handleCopyAndRedirectToAndroidStore(RU_STORE)}>Доступно в RuStore</button>}
 
-      <hr style={{ width: "100%" }} />
+      {getCurrentPlatform() === ANDROID && <hr style={{ width: "100%" }} />}
       
-      <button onClick={() => handleCopyAndRedirectToAndroidStore(RU_STORE)}>Доступно в RuStore</button>
+      {getCurrentPlatform() === ANDROID && <button onClick={() => handleCopyAndRedirectToAndroidStore(APP_GALLERY)}>Откройте в AppGallery</button>}
 
-      <hr style={{ width: "100%" }} />
+      {getCurrentPlatform() === ANDROID && <hr style={{ width: "100%" }} />}
       
-      <button onClick={() => handleCopyAndRedirectToAndroidStore(APP_GALLERY)}>Откройте в AppGallery</button>
+      {getCurrentPlatform() === ANDROID && <button onClick={() => handleCopyAndRedirectToAndroidStore(GOOGLE_PLAY)}>Доступно в Google Play</button>}
 
-      <hr style={{ width: "100%" }} />
-      
-      <button onClick={() => handleCopyAndRedirectToAndroidStore(GOOGLE_PLAY)}>Доступно в Google Play</button>
-      
     </>
   );
 }
