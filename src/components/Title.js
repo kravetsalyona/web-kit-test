@@ -294,6 +294,10 @@ export default function Title() {
   const IOS = "ios";
   const ANDROID = "android";
 
+  const RU_STORE = "ru_store";
+  const APP_GALLERY = "app_gallery";
+  const GOOGLE_PLAY = "google_play";
+
   const APP_STORE_URL = 'https://apps.apple.com/app/id1665892408'
   const RU_STORE_URL = 'https://redirect.appmetrica.yandex.com/serve/822075885539630369'
   const APP_GALLERY_URL = 'https://redirect.appmetrica.yandex.com/serve/29442355803275003';
@@ -593,12 +597,12 @@ export default function Title() {
 
   
   // Определяет русская ли локаль
-  const isRuLocale = () => {
-    const userLocale = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
-    const normalizeUserLocale = v => (v || '').toLowerCase().replace('_','-');
-    const locale = normalizeUserLocale(userLocale);
-    return locale === 'ru-ru' || locale.startsWith('ru')
-  };
+  // const isRuLocale = () => {
+  //   const userLocale = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
+  //   const normalizeUserLocale = v => (v || '').toLowerCase().replace('_','-');
+  //   const locale = normalizeUserLocale(userLocale);
+  //   return locale === 'ru-ru' || locale.startsWith('ru')
+  // };
 
 
   // Определяет текущую платформу по userAgent
@@ -614,73 +618,94 @@ export default function Title() {
   };
 
   // Формирует последовательность ссылок для Android по правилам
-  const getAndroidUrlsBySpec = () => {
-    const urls = [];
-    const ua = window?.navigator?.userAgent || '';
-    const currentPlatform = getCurrentPlatform();
-    // 1) Если Huawei/Honor → AppGallery
-    if (/huawei|honor|hmscore/i.test(ua) && currentPlatform === ANDROID) {
-      urls.push(APP_GALLERY_URL);
-    }
-    // 2) Если локаль ru-ru → RuStore
-    if (isRuLocale() && currentPlatform === ANDROID) {
-      urls.push(RU_STORE_URL);
-    }
-    // 3) По умолчанию → Google Play
-    urls.push(GOOGLE_PLAY_URL);
-    // Убираем дубликаты, сохраняя порядок
-    return Array.from(new Set(urls));
-  };
+  // const getAndroidUrlsBySpec = () => {
+  //   const urls = [];
+  //   const ua = window?.navigator?.userAgent || '';
+  //   const currentPlatform = getCurrentPlatform();
+  //   // 1) Если Huawei/Honor → AppGallery
+  //   if (/huawei|honor|hmscore/i.test(ua) && currentPlatform === ANDROID) {
+  //     urls.push(APP_GALLERY_URL);
+  //   }
+  //   // 2) Если локаль ru-ru → RuStore
+  //   if (isRuLocale() && currentPlatform === ANDROID) {
+  //     urls.push(RU_STORE_URL);
+  //   }
+  //   // 3) По умолчанию → Google Play
+  //   urls.push(GOOGLE_PLAY_URL);
+  //   // Убираем дубликаты, сохраняя порядок
+  //   return Array.from(new Set(urls));
+  // };
 
   // Пошаговое открытие ссылок с задержкой 500 мс, если предыдущая не открылась
-  const openSequentiallyWithDelay = (urls, index = 0) => {
-    if (!urls || index >= urls.length) return;
-    setTimeout(() => {
-      const opened = window?.open(urls[index], '_blank');
-      if (!opened) {
-        openSequentiallyWithDelay(urls, index + 1);
-      }
-    }, 500);
-  };
+  // const openSequentiallyWithDelay = (urls, index = 0) => {
+  //   if (!urls || index >= urls.length) return;
+  //   setTimeout(() => {
+  //     const opened = window?.open(urls[index], '_blank');
+  //     if (!opened) {
+  //       openSequentiallyWithDelay(urls, index + 1);
+  //     }
+  //   }, 500);
+  // };
 
   //Открывает Store в новой вкладке с учетом платформы и правил
-  const openStore = (platform) => {
+  const openStore = (platform, store) => {
     switch (platform) {
       case IOS:
         window?.open(APP_STORE_URL, '_blank');
         break;
       case ANDROID:
-        const candidates = getAndroidUrlsBySpec();
-        console.log(candidates, 'ссылки в специальном порядке, которые буду пробовать открывать');
-        openSequentiallyWithDelay(candidates,0);
+        // const candidates = getAndroidUrlsBySpec();
+        // console.log(candidates, 'ссылки в специальном порядке, которые буду пробовать открывать');
+        // openSequentiallyWithDelay(candidates,0);
+        if (store === RU_STORE) {
+          window?.open(RU_STORE_URL, '_blank');
+        }
+        if (store === APP_GALLERY) {
+        window?.open(APP_GALLERY_URL, '_blank');
+        }
+        if (store === GOOGLE_PLAY) {
+        window?.open(GOOGLE_PLAY_URL, '_blank');
+        }
         break;
       default:
         console.error('Нужная платформа не найдена для отправки открытия в новой вкладке.');
     }
   };
 
+  
+
   //Копирует данные в буфер обмена и перенаправляет в Store
-  const handleCopyAndRedirectToStore = async () => {
+  const handleCopyAndRedirectToStore = async (store) => {
     const currentPlatform = getCurrentPlatform();
     openStore(currentPlatform);
     try {
       if (!navigator.clipboard) {
         throw new Error("Clipboard API не поддерживается в этом браузере.");
       }
-      if(currentPlatform === ANDROID){
-        await copyTextAndroidOneItem();
-      } else if(currentPlatform === IOS){
-        // TODO  не работает копирование IOS
-        const clipboardItems = createClipboardItems();
-        await navigator.clipboard.write(clipboardItems);
-      }
-      
+      const clipboardItems = createClipboardItems();
+      await navigator.clipboard.write(clipboardItems);
       console.log("Данные успешно скопированы в буфер обмена");
       
     } catch (error) {
       console.error("Ошибка при копировании данных:", error);
     }
   };
+
+  //Копирует данные в буфер обмена и перенаправляет в Store Андроида
+  const handleCopyAndRedirectToAndroidStore = async (store) => {
+    openStore(ANDROID, store);
+    try {
+      if (!navigator.clipboard) {
+        throw new Error("Clipboard API не поддерживается в этом браузере.");
+      }
+      await copyTextAndroidOneItem();
+      console.log("Данные успешно скопированы в буфер обмена");
+      
+    } catch (error) {
+      console.error("Ошибка при копировании данных:", error);
+    }
+  };
+  
 
   return (
     <>
@@ -910,6 +935,17 @@ export default function Title() {
       
       <button onClick={handleCopyAndRedirectToStore}>Перейти</button>
 
+      <hr style={{ width: "100%" }} />
+      
+      <button onClick={() => handleCopyAndRedirectToAndroidStore(RU_STORE)}>Доступно в RuStore</button>
+
+      <hr style={{ width: "100%" }} />
+      
+      <button onClick={() => handleCopyAndRedirectToAndroidStore(APP_GALLERY)}>Откройте в AppGallery</button>
+
+      <hr style={{ width: "100%" }} />
+      
+      <button onClick={() => handleCopyAndRedirectToAndroidStore(GOOGLE_PLAY)}>Доступно в Google Play</button>
       
     </>
   );
