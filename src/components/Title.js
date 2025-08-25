@@ -609,10 +609,7 @@ export default function Title() {
   // Определяет текущую платформу по userAgent
   const getCurrentPlatform =() => {
     const ua = window?.navigator?.userAgent || '';
-    if (ua.includes('iPhone')){
-      return IOS;
-    }
-    if (ua.includes('iPad')){
+    if (ua.includes('iPhone') || ua.includes('Mac') || ua.includes('iPad')){
       return IOS;
     }
     if (ua.includes('Android')) {
