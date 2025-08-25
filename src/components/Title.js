@@ -612,11 +612,16 @@ export default function Title() {
     if (ua.includes('iPhone')){
       return IOS;
     }
+    if (ua.includes('iPad')){
+      return IOS;
+    }
     if (ua.includes('Android')) {
       return ANDROID;
     }
     return undefined;
   };
+  
+  const platform = getCurrentPlatform();
 
   // Формирует последовательность ссылок для Android по правилам
   // const getAndroidUrlsBySpec = () => {
@@ -678,9 +683,8 @@ export default function Title() {
   
 
   //Копирует данные в буфер обмена и перенаправляет в Store
-  const handleCopyAndRedirectToStore = async (store) => {
-    const currentPlatform = getCurrentPlatform();
-    openStore(currentPlatform, store);
+  const handleCopyAndRedirectToAppStore = async (store) => {
+    openStore(platform, store);
     try {
       if (!navigator.clipboard) {
         throw new Error("Clipboard API не поддерживается в этом браузере.");
@@ -936,17 +940,20 @@ export default function Title() {
 
       <hr style={{ width: "100%" }} />
       
-      {getCurrentPlatform() === IOS && <button onClick={() => handleCopyAndRedirectToStore(APP_STORE)}>Перейти</button>}
-      {getCurrentPlatform() === ANDROID && 
-      <button onClick={() => handleCopyAndRedirectToAndroidStore(RU_STORE)}>Доступно в RuStore</button>}
+      {platform === IOS && ( <button onClick={() => handleCopyAndRedirectToAppStore(APP_STORE)}>Перейти</button>)}
+      {platform === ANDROID && (
+      <>
+      <button onClick={() => handleCopyAndRedirectToAndroidStore(RU_STORE)}>Доступно в RuStore</button>
 
-      {getCurrentPlatform() === ANDROID && <hr style={{ width: "100%" }} />}
+      <hr style={{ width: "100%" }} />
       
-      {getCurrentPlatform() === ANDROID && <button onClick={() => handleCopyAndRedirectToAndroidStore(APP_GALLERY)}>Откройте в AppGallery</button>}
+      <button onClick={() => handleCopyAndRedirectToAndroidStore(APP_GALLERY)}>Откройте в AppGallery</button>
 
-      {getCurrentPlatform() === ANDROID && <hr style={{ width: "100%" }} />}
+      <hr style={{ width: "100%" }} />
       
-      {getCurrentPlatform() === ANDROID && <button onClick={() => handleCopyAndRedirectToAndroidStore(GOOGLE_PLAY)}>Доступно в Google Play</button>}
+      <button onClick={() => handleCopyAndRedirectToAndroidStore(GOOGLE_PLAY)}>Доступно в Google Play</button>
+      </>
+      )}
 
     </>
   );
