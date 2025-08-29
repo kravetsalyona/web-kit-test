@@ -534,7 +534,7 @@ export default function Title() {
   };
 
   async function copyTextAndroidOneItem() {
-    const text = 'Text Here Android';
+    const text = 'TG9vbmFJbnRlclZpZXc=';
   
     try {
       if (window.ClipboardItem && navigator.clipboard?.write) {
