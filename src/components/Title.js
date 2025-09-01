@@ -534,21 +534,19 @@ export default function Title() {
   };
 
   async function copyTextAndroidOneItem() {
-    const text = 'TG9vbmFJbnRlclZpZXc=';
+    const base64Text = 'TG9vbmFJbnRlclZpZXc=';
   
     try {
       if (window.ClipboardItem && navigator.clipboard?.write) {
-        const blob = new Blob([text], { type: 'text/plain' });
-        const item = new ClipboardItem({ 'text/plain': blob });
+        const blob = new Blob([base64Text], { type: 'application/x-base64' });
+        const item = new ClipboardItem({ 'application/x-base64': blob });
         await navigator.clipboard.write([item]);
         return;
       }
-      // Проще: если writeText доступен
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(base64Text);
     } catch (_) {
-      // Старые/ограниченные движки (WebView)
       const ta = document.createElement('textarea');
-      ta.value = text;
+      ta.value = base64Text;
       ta.style.position = 'fixed';
       ta.style.opacity = '0';
       document.body.appendChild(ta);
@@ -557,7 +555,6 @@ export default function Title() {
       document.body.removeChild(ta);
     }
   }
-
 
   const getDataForTypeIntervisionIos= (type) => {
     switch (type) {
