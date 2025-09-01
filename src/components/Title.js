@@ -536,27 +536,27 @@ export default function Title() {
   async function copyTextAndroid() {
     const base64Text = 'TG9vbmFJbnRlclZpZXc=';
 
-  try {
-    if (window.ClipboardItem && navigator.clipboard?.write) {
-      const blob = new Blob([base64Text], { type: 'application/x-base64' });
-      const item = new ClipboardItem({ 'application/x-base64': blob });
-      await navigator.clipboard.write([item]);
-      return;
-    }
-    await navigator.clipboard.writeText(base64Text);
-  } catch (_) {
-    const ta = document.createElement('textarea');
-    ta.value = base64Text;
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
+    try {
+      if (window.ClipboardItem && navigator.clipboard?.write) {
+        const blob = new Blob([base64Text], { type: 'application/x-base64' });
+        const item = new ClipboardItem({ 'application/x-base64': blob });
+        await navigator.clipboard.write([item]);
+        return;
+      }
+      await navigator.clipboard.writeText(base64Text);
+    } catch (_) {
+      const ta = document.createElement('textarea');
+      ta.value = base64Text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
     }
   }
 
-  const getDataForTypeIntervisionIos= (type) => {
+  const getDataForTypeIos = (type) => {
     switch (type) {
       case "text/plain":
         return new Blob(["Text here Ios"], { type: "text/plain" });
@@ -579,14 +579,14 @@ export default function Title() {
     for (let i = 0; i < CLIPBOARD_CONFIG.textItems; i++) {
       items.push(
         new ClipboardItem({
-          [CLIPBOARD_CONFIG.textType]: getDataForTypeIntervisionIos(CLIPBOARD_CONFIG.textType),
+          [CLIPBOARD_CONFIG.textType]: getDataForTypeIos(CLIPBOARD_CONFIG.textType),
         })
       );
     }
     // Добавляем изображение
     items.push(
       new ClipboardItem({
-        [CLIPBOARD_CONFIG.imageType]: getDataForTypeIntervisionIos(CLIPBOARD_CONFIG.imageType),
+        [CLIPBOARD_CONFIG.imageType]: getDataForTypeIos(CLIPBOARD_CONFIG.imageType),
       })
     );
     
@@ -607,7 +607,7 @@ export default function Title() {
   
   const platform = getCurrentPlatform();
 
-  //Открывает Store в новой вкладке с учетом платформы и правил
+  //Открывает Store в новой вкладке с учетом платформы и store
   const openStore = (platform, store) => {
     switch (platform) {
       case PLATFORMS.IOS:
@@ -616,9 +616,6 @@ export default function Title() {
         }
         break;
       case PLATFORMS.ANDROID:
-        // const candidates = getAndroidUrlsBySpec();
-        // console.log(candidates, 'ссылки в специальном порядке, которые буду пробовать открывать');
-        // openSequentiallyWithDelay(candidates,0);
         if (store === STORES.RU_STORE) {
           window?.open(URLS.RU_STORE_URL, '_blank');
         }
@@ -636,7 +633,7 @@ export default function Title() {
 
   
 
-  //Копирует данные в буфер обмена и перенаправляет в Store
+  //Копирует данные в буфер обмена и перенаправляет в Store Ios
   const handleCopyAndRedirectToAppStore = async (store) => {
     openStore(platform, store);
     try {
@@ -652,7 +649,7 @@ export default function Title() {
     }
   };
 
-  //Копирует данные в буфер обмена и перенаправляет в Store Андроида
+  //Копирует данные в буфер обмена и перенаправляет в Store Android
   const handleCopyAndRedirectToAndroidStore = async (store) => {
     
     try {
