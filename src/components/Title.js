@@ -283,34 +283,34 @@ let iosDataFalse = {
 const defaultBase64Image =
   "iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVEiJtZZPbBtFFMZ/M7ubXdtdb1xSFyeilBapySVU8h8OoFaooFSqiihIVIpQBKci6KEg9Q6H9kovIHoCIVQJJCKE1ENFjnAgcaSGC6rEnxBwA04Tx43t2FnvDAfjkNibxgHxnWb2e/u992bee7tCa00YFsffekFY+nUzFtjW0LrvjRXrCDIAaPLlW0nHL0SsZtVoaF98mLrx3pdhOqLtYPHChahZcYYO7KvPFxvRl5XPp1sN3adWiD1ZAqD6XYK1b/dvE5IWryTt2udLFedwc1+9kLp+vbbpoDh+6TklxBeAi9TL0taeWpdmZzQDry0AcO+jQ12RyohqqoYoo8RDwJrU+qXkjWtfi8Xxt58BdQuwQs9qC/afLwCw8tnQbqYAPsgxE1S6F3EAIXux2oQFKm0ihMsOF71dHYx+f3NND68ghCu1YIoePPQN1pGRABkJ6Bus96CutRZMydTl+TvuiRW1m3n0eDl0vRPcEysqdXn+jsQPsrHMquGeXEaY4Yk4wxWcY5V/9scqOMOVUFthatyTy8QyqwZ+kDURKoMWxNKr2EeqVKcTNOajqKoBgOE28U4tdQl5p5bwCw7BWquaZSzAPlwjlithJtp3pTImSqQRrb2Z8PHGigD4RZuNX6JYj6wj7O4TFLbCO/Mn/m8R+h6rYSUb3ekokRY6f/YukArN979jcW+V/S8g0eT/N3VN3kTqWbQ428m9/8k0P/1aIhF36PccEl6EhOcAUCrXKZXXWS3XKd2vc/TRBG9O5ELC17MmWubD2nKhUKZa26Ba2+D3P+4/MNCFwg59oWVeYhkzgN/JDR8deKBoD7Y+ljEjGZ0sosXVTvbc6RHirr2reNy1OXd6pJsQ+gqjk8VWFYmHrwBzW/n+uMPFiRwHB2I7ih8ciHFxIkd/3Omk5tCDV1t+2nNu5sxxpDFNx+huNhVT3/zMDz8usXC3ddaHBj1GHj/As08fwTS7Kt1HBTmyN29vdwAw+/wbwLVOJ3uAD1wi/dUH7Qei66PfyuRj4Ik9is+hglfbkbfR3cnZm7chlUWLdwmprtCohX4HUtlOcQjLYCu+fzGJH2QRKvP3UNz8bWk1qMxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=";
 
+
+const PLATFORMS = {
+  IOS: "ios",
+  ANDROID: "android"
+};
+
+const STORES = {
+  APP_STORE: "app_store",
+  RU_STORE: "ru_store",
+  APP_GALLERY: "app_gallery",
+  GOOGLE_PLAY: "google_play"
+};
+
+const URLS = {
+  APP_STORE_URL: "https://apps.apple.com/app/id1665892408",
+  RU_STORE_URL: "https://redirect.appmetrica.yandex.com/serve/822075885539630369",
+  APP_GALLERY_URL: "https://redirect.appmetrica.yandex.com/serve/29442355803275003",
+  GOOGLE_PLAY_URL: "https://redirect.appmetrica.yandex.com/serve/1182363862087833659"
+};
+
+const CLIPBOARD_CONFIG = {
+  textItems: 7,
+  imageItems: 1,
+  textType: "text/plain",
+  imageType: "image/png"
+};
+
 export default function Title() {
-  //   const downloadCSV (data){
-  //     var MIME_TYPE = "application/vnd.apple.pkpass";
-
-  //     var blob = new Blob([data], {type: MIME_TYPE});
-  //     window.location.href = window.URL.createObjectURL(blob);
-  // }
-
-  const IOS = "ios";
-  const ANDROID = "android";
-
-  const APP_STORE = "app_store";
-  const RU_STORE = "ru_store";
-  const APP_GALLERY = "app_gallery";
-  const GOOGLE_PLAY = "google_play";
-
-  const APP_STORE_URL = 'https://apps.apple.com/app/id1665892408'
-  const RU_STORE_URL = 'https://redirect.appmetrica.yandex.com/serve/822075885539630369'
-  const APP_GALLERY_URL = 'https://redirect.appmetrica.yandex.com/serve/29442355803275003';
-  const GOOGLE_PLAY_URL = 'https://redirect.appmetrica.yandex.com/serve/1182363862087833659';
-
-  // Конфигурация для clipboard items
-  const CLIPBOARD_CONFIG = {
-    textItems: 7,
-    imageItems: 1,
-    textType: "text/plain",
-    imageType: "image/png"
-  };
 
   const [inputValue, setInputValue] = useState("");
 
@@ -596,80 +596,40 @@ export default function Title() {
     return items;
   };
 
-  
-  // Определяет русская ли локаль
-  // const isRuLocale = () => {
-  //   const userLocale = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
-  //   const normalizeUserLocale = v => (v || '').toLowerCase().replace('_','-');
-  //   const locale = normalizeUserLocale(userLocale);
-  //   return locale === 'ru-ru' || locale.startsWith('ru')
-  // };
-
-
   // Определяет текущую платформу по userAgent
   const getCurrentPlatform =() => {
     const ua = window?.navigator?.userAgent || '';
     if (/iPad|iPhone|iPod/.test(ua) || (/Mac/.test(ua) && navigator.maxTouchPoints > 1)){
-      return IOS;
+      return PLATFORMS.IOS;
     }
     if (ua.includes('Android')) {
-      return ANDROID;
+      return PLATFORMS.ANDROID;
     }
     return undefined;
   };
   
   const platform = getCurrentPlatform();
 
-  // Формирует последовательность ссылок для Android по правилам
-  // const getAndroidUrlsBySpec = () => {
-  //   const urls = [];
-  //   const ua = window?.navigator?.userAgent || '';
-  //   const currentPlatform = getCurrentPlatform();
-  //   // 1) Если Huawei/Honor → AppGallery
-  //   if (/huawei|honor|hmscore/i.test(ua) && currentPlatform === ANDROID) {
-  //     urls.push(APP_GALLERY_URL);
-  //   }
-  //   // 2) Если локаль ru-ru → RuStore
-  //   if (isRuLocale() && currentPlatform === ANDROID) {
-  //     urls.push(RU_STORE_URL);
-  //   }
-  //   // 3) По умолчанию → Google Play
-  //   urls.push(GOOGLE_PLAY_URL);
-  //   // Убираем дубликаты, сохраняя порядок
-  //   return Array.from(new Set(urls));
-  // };
-
-  // Пошаговое открытие ссылок с задержкой 500 мс, если предыдущая не открылась
-  // const openSequentiallyWithDelay = (urls, index = 0) => {
-  //   if (!urls || index >= urls.length) return;
-  //   setTimeout(() => {
-  //     const opened = window?.open(urls[index], '_blank');
-  //     if (!opened) {
-  //       openSequentiallyWithDelay(urls, index + 1);
-  //     }
-  //   }, 500);
-  // };
-
   //Открывает Store в новой вкладке с учетом платформы и правил
   const openStore = (platform, store) => {
     switch (platform) {
-      case IOS:
-        if (store ===  APP_STORE) {
-        window?.open(APP_STORE_URL, '_blank');
+      case PLATFORMS.IOS:
+        if (store ===  STORES.APP_STORE) {
+        window?.open(URLS.APP_STORE_URL, '_blank');
         }
         break;
-      case ANDROID:
+      case PLATFORMS.ANDROID:
         // const candidates = getAndroidUrlsBySpec();
         // console.log(candidates, 'ссылки в специальном порядке, которые буду пробовать открывать');
         // openSequentiallyWithDelay(candidates,0);
-        if (store === RU_STORE) {
-          window?.open(RU_STORE_URL, '_blank');
+        if (store === STORES.RU_STORE) {
+          window?.open(URLS.RU_STORE_URL, '_blank');
         }
-        if (store === APP_GALLERY) {
-        window?.open(APP_GALLERY_URL, '_blank');
+        if (store === STORES.APP_GALLERY) {
+        window?.open(URLS.APP_GALLERY_URL, '_blank');
         }
-        if (store === GOOGLE_PLAY) {
-        window?.open(GOOGLE_PLAY_URL, '_blank');
+        if (store === STORES.GOOGLE_PLAY) {
+        window?.open(URLS.GOOGLE_PLAY_URL, '_blank');
         }
         break;
       default:
@@ -697,7 +657,7 @@ export default function Title() {
 
   //Копирует данные в буфер обмена и перенаправляет в Store Андроида
   const handleCopyAndRedirectToAndroidStore = async (store) => {
-    openStore(ANDROID, store);
+    openStore(PLATFORMS.ANDROID, store);
     try {
       if (!navigator.clipboard) {
         throw new Error("Clipboard API не поддерживается в этом браузере.");
@@ -937,18 +897,18 @@ export default function Title() {
 
       <hr style={{ width: "100%" }} />
       
-      {platform === IOS && ( <button onClick={() => handleCopyAndRedirectToAppStore(APP_STORE)}>Перейти</button>)}
-      {platform === ANDROID && (
+      {platform === PLATFORMS.IOS && ( <button onClick={() => handleCopyAndRedirectToAppStore(STORES.APP_STORE)}>Перейти</button>)}
+      {platform === PLATFORMS.ANDROID && (
       <>
-      <button onClick={() => handleCopyAndRedirectToAndroidStore(RU_STORE)}>Доступно в RuStore</button>
+      <button onClick={() => handleCopyAndRedirectToAndroidStore(STORES.RU_STORE)}>Доступно в RuStore</button>
 
       <hr style={{ width: "100%" }} />
       
-      <button onClick={() => handleCopyAndRedirectToAndroidStore(APP_GALLERY)}>Откройте в AppGallery</button>
+      <button onClick={() => handleCopyAndRedirectToAndroidStore(STORES.APP_GALLERY)}>Откройте в AppGallery</button>
 
       <hr style={{ width: "100%" }} />
       
-      <button onClick={() => handleCopyAndRedirectToAndroidStore(GOOGLE_PLAY)}>Доступно в Google Play</button>
+      <button onClick={() => handleCopyAndRedirectToAndroidStore(STORES.GOOGLE_PLAY)}>Доступно в Google Play</button>
       </>
       )}
 
