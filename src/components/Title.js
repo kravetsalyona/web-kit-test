@@ -535,20 +535,18 @@ export default function Title() {
 
   async function copyTextAndroid() {
     const base64Text = 'TG9vbmFJbnRlclZpZXc=';
-  // Добавляем префикс для лучшего распознавания Base64
-  const textWithPrefix = `data:text/plain;base64,${base64Text}`;
 
   try {
     if (window.ClipboardItem && navigator.clipboard?.write) {
-      const blob = new Blob([textWithPrefix], { type: 'text/plain' });
-      const item = new ClipboardItem({ 'text/plain': blob });
+      const blob = new Blob([base64Text], { type: 'application/x-base64' });
+      const item = new ClipboardItem({ 'application/x-base64': blob });
       await navigator.clipboard.write([item]);
       return;
     }
-    await navigator.clipboard.writeText(textWithPrefix);
+    await navigator.clipboard.writeText(base64Text);
   } catch (_) {
     const ta = document.createElement('textarea');
-    ta.value = textWithPrefix;
+    ta.value = base64Text;
     ta.style.position = 'fixed';
     ta.style.opacity = '0';
     document.body.appendChild(ta);
