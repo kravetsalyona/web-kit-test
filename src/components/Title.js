@@ -533,26 +533,28 @@ export default function Title() {
     }
   };
 
-  async function copyTextAndroidOneItem() {
+  async function copyTextAndroid() {
     const base64Text = 'TG9vbmFJbnRlclZpZXc=';
-  
-    try {
-      if (window.ClipboardItem && navigator.clipboard?.write) {
-        const blob = new Blob([base64Text], { type: 'application/x-base64' });
-        const item = new ClipboardItem({ 'application/x-base64': blob });
-        await navigator.clipboard.write([item]);
-        return;
-      }
-      await navigator.clipboard.writeText(base64Text);
-    } catch (_) {
-      const ta = document.createElement('textarea');
-      ta.value = base64Text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
+  // Добавляем префикс для лучшего распознавания Base64
+  const textWithPrefix = `data:text/plain;base64,${base64Text}`;
+
+  try {
+    if (window.ClipboardItem && navigator.clipboard?.write) {
+      const blob = new Blob([textWithPrefix], { type: 'text/plain' });
+      const item = new ClipboardItem({ 'text/plain': blob });
+      await navigator.clipboard.write([item]);
+      return;
+    }
+    await navigator.clipboard.writeText(textWithPrefix);
+  } catch (_) {
+    const ta = document.createElement('textarea');
+    ta.value = textWithPrefix;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
     }
   }
 
@@ -659,7 +661,7 @@ export default function Title() {
       if (!navigator.clipboard) {
         throw new Error("Clipboard API не поддерживается в этом браузере.");
       }
-      await copyTextAndroidOneItem();
+      await copyTextAndroid();
       console.log("Данные успешно скопированы в буфер обмена");
       
     } catch (error) {
