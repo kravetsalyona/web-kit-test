@@ -656,13 +656,14 @@ export default function Title() {
 
   //Копирует данные в буфер обмена и перенаправляет в Store Андроида
   const handleCopyAndRedirectToAndroidStore = async (store) => {
-    openStore(PLATFORMS.ANDROID, store);
+    
     try {
       if (!navigator.clipboard) {
         throw new Error("Clipboard API не поддерживается в этом браузере.");
       }
       await copyTextAndroid();
       console.log("Данные успешно скопированы в буфер обмена");
+      openStore(PLATFORMS.ANDROID, store);
       
     } catch (error) {
       console.error("Ошибка при копировании данных:", error);
