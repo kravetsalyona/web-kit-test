@@ -953,7 +953,7 @@ export default function Title() {
           window.webkit.messageHandlers.resultGuestRegistrationHandler.postMessage(
             JSON.stringify({
               state: "ERROR",
-              "description": "541c01f0-4f59-48c0-ab46-005126801802"
+              description: "541c01f0-4f59-48c0-ab46-005126801802"
             })
           );
         }}
