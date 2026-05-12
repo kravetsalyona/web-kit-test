@@ -694,10 +694,7 @@ export default function Title() {
   const sendPostMessageTokenAndroid = () => {
       window.initGuestRegistrationHandler.sendMessage(JSON.stringify({
         type: "initGuestRegistrationHandler",
-        data: {
-          state: "READY",
-          source: "UKD"
-        }
+        data: {}
       }));
       setTimeout(sendPostMessageAndroid,2000);
     };
