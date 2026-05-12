@@ -937,7 +937,7 @@ export default function Title() {
       <button
         className="favorite styled"
         onClick={() => {
-          window.webkit.messageHandlers.resultRegistrationHandler.postMessage(
+          window.webkit.messageHandlers.resultGuestRegistrationHandler.postMessage(
             JSON.stringify({
               state: "SUCCESS",
               msaSessionId: "541c01f0-4f59-48c0-ab46-005126801802"
