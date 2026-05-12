@@ -664,7 +664,23 @@ export default function Title() {
       console.error("Ошибка при копировании данных:", error);
     }
   };
+
   
+  const sendPostMessage = () => {
+      window.webkit.messageHandlers.pageStateHandler.postMessage(
+        JSON.stringify({
+          state: "READY", 
+          source: "UKD"
+        })
+      );
+    };
+  
+  const sendPostMessageToken = () => {
+      window.webkit.messageHandlers.initGuestRegistrationHandler.postMessage(
+        JSON.stringify({})
+      );
+      setTimeout(sendPostMessage,2000);
+    };
 
   return (
     <>
@@ -904,6 +920,39 @@ export default function Title() {
       <hr style={{ width: "100%" }} />
       
       <button onClick={() => handleCopyAndRedirectToAndroidStore(STORES.GOOGLE_PLAY)}>Доступно в Google Play</button>
+      <br />
+
+      <button
+        className="favorite styled"
+        onClick={sendPostMessageToken}
+      >
+        УКД ios - Нативный лоадер и передача токена
+      </button>
+      <button
+        className="favorite styled"
+        onClick={() => {
+          window.webkit.messageHandlers.resultRegistrationHandler.postMessage(
+            JSON.stringify({
+              state: "SUCCESS",
+              msaSessionId: "541c01f0-4f59-48c0-ab46-005126801802"
+            })
+          );
+        }}
+      >
+        УКД ios - Успешная регистрация
+      </button>
+      <br />
+
+      <button
+        className="favorite android"
+        onClick={() => {
+          window.AndroidWebViewHandler.sendMessage(JSON.stringify(androidData));
+        }}
+      >
+        Войти по ВТБID Android
+      </button>
+      
+      
       </>
       )}
 
