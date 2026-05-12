@@ -952,6 +952,19 @@ export default function Title() {
         onClick={() => {
           window.webkit.messageHandlers.resultGuestRegistrationHandler.postMessage(
             JSON.stringify({
+              state: "ERROR",
+              "description": "541c01f0-4f59-48c0-ab46-005126801802"
+            })
+          );
+        }}
+      >
+        УКД ios - Регистрация не нужна
+      </button>
+      <button
+        className="favorite styled"
+        onClick={() => {
+          window.webkit.messageHandlers.resultGuestRegistrationHandler.postMessage(
+            JSON.stringify({
               state: "CLIENT_DECLINE"
             })
           );
