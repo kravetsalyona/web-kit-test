@@ -664,9 +664,8 @@ export default function Title() {
       console.error("Ошибка при копировании данных:", error);
     }
   };
-
   
-  const sendPostMessage = () => {
+  const sendPostMessageIos = () => {
       window.webkit.messageHandlers.pageStateHandler.postMessage(
         JSON.stringify({
           state: "READY", 
@@ -675,11 +674,32 @@ export default function Title() {
       );
     };
   
-  const sendPostMessageToken = () => {
+  const sendPostMessageTokenIos = () => {
       window.webkit.messageHandlers.initGuestRegistrationHandler.postMessage(
         JSON.stringify({})
       );
-      setTimeout(sendPostMessage,2000);
+      setTimeout(sendPostMessageIos,2000);
+    };
+
+  const sendPostMessageAndroid = () => {
+      window.pageStateHandler.sendMessage(JSON.stringify({
+        type: "initGuestRegistrationHandler",
+        data: {
+          state: "READY",
+          source: "UKD"
+        }
+      }));
+    };
+  
+  const sendPostMessageTokenAndroid = () => {
+      window.initGuestRegistrationHandler.sendMessage(JSON.stringify({
+        type: "initGuestRegistrationHandler",
+        data: {
+          state: "READY",
+          source: "UKD"
+        }
+      }));
+      setTimeout(sendPostMessageAndroid,2000);
     };
 
   return (
@@ -907,24 +927,10 @@ export default function Title() {
       <button onClick={handleReadClipboard}>Прочитать буфер обмена</button>
 
       <hr style={{ width: "100%" }} />
-      
-      {platform === PLATFORMS.IOS && ( <button onClick={() => handleCopyAndRedirectToAppStore(STORES.APP_STORE)}>Перейти</button>)}
-      {platform === PLATFORMS.ANDROID && (
-      <>
-      <button onClick={() => handleCopyAndRedirectToAndroidStore(STORES.RU_STORE)}>Доступно в RuStore</button>
-
-      <hr style={{ width: "100%" }} />
-      
-      <button onClick={() => handleCopyAndRedirectToAndroidStore(STORES.APP_GALLERY)}>Откройте в AppGallery</button>
-
-      <hr style={{ width: "100%" }} />
-      
-      <button onClick={() => handleCopyAndRedirectToAndroidStore(STORES.GOOGLE_PLAY)}>Доступно в Google Play</button>
-      <br />
 
       <button
         className="favorite styled"
-        onClick={sendPostMessageToken}
+        onClick={sendPostMessageTokenIos}
       >
         УКД ios - Нативный лоадер и передача токена
       </button>
@@ -941,18 +947,94 @@ export default function Title() {
       >
         УКД ios - Успешная регистрация
       </button>
-      <br />
+      <button
+        className="favorite styled"
+        onClick={() => {
+          window.webkit.messageHandlers.resultGuestRegistrationHandler.postMessage(
+            JSON.stringify({
+              state: "CLIENT_DECLINE"
+            })
+          );
+        }}
+      >
+        УКД ios - Регистрация отклонена
+      </button>
 
+      <br />
+      <button
+        className="favorite android"
+        onClick={sendPostMessageTokenAndroid}
+      >
+        УКД Android - Нативный лоадер и передача токена 
+      </button>
       <button
         className="favorite android"
         onClick={() => {
-          window.AndroidWebViewHandler.sendMessage(JSON.stringify(androidData));
+          window.resultGuestRegistrationHandler.sendMessage(JSON.stringify({
+            type: "resultGuestRegistrationHandler",
+            data: {
+              state: "SUCCESS",
+              msaSessionId: "541c01f0-4f59-48c0-ab46-005126801802"
+            }
+          }));
         }}
       >
-        Войти по ВТБID Android
+        УКД Android - Успешная регистрация 
       </button>
+      <button
+        className="favorite android"
+        onClick={() => {
+          window.resultGuestRegistrationHandler.sendMessage(JSON.stringify({
+            type: "resultGuestRegistrationHandler",
+            data: {
+              state: "NOT_NEDEED",
+              msaSessionId: "541c01f0-4f59-48c0-ab46-005126801802"
+            }
+          }));
+        }}
+      >
+        УКД Android - Регистрация не нужна 
+      </button>
+      <button
+        className="favorite android"
+        onClick={() => {
+          window.resultGuestRegistrationHandler.sendMessage(JSON.stringify({
+            type: "resultGuestRegistrationHandler",
+            data: {
+              state: "ERROR",
+              msaSessionId: "541c01f0-4f59-48c0-ab46-005126801802"
+            }
+          }));
+        }}
+      >
+        УКД Android - Ошибка регистрации
+      </button>
+      <button
+        className="favorite android"
+        onClick={() => {
+          window.resultGuestRegistrationHandler.sendMessage(JSON.stringify({
+            type: "resultGuestRegistrationHandler",
+            data: {
+              state: "CLIENT_DECLINE"
+            }
+          }));
+        }}
+      >
+        УКД Android - Регистрация отклонена
+      </button>
+      <hr style={{ width: "100%" }} />
+      {platform === PLATFORMS.IOS && ( <button onClick={() => handleCopyAndRedirectToAppStore(STORES.APP_STORE)}>Перейти</button>)}
+      {platform === PLATFORMS.ANDROID && (
+      <>
+      <button onClick={() => handleCopyAndRedirectToAndroidStore(STORES.RU_STORE)}>Доступно в RuStore</button>
+
+      <hr style={{ width: "100%" }} />
       
+      <button onClick={() => handleCopyAndRedirectToAndroidStore(STORES.APP_GALLERY)}>Откройте в AppGallery</button>
+
+      <hr style={{ width: "100%" }} />
       
+      <button onClick={() => handleCopyAndRedirectToAndroidStore(STORES.GOOGLE_PLAY)}>Доступно в Google Play</button>      
       </>
       )}
 
