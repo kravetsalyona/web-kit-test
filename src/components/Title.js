@@ -683,7 +683,7 @@ export default function Title() {
 
   const sendPostMessageAndroid = () => {
       window.pageStateHandler.sendMessage(JSON.stringify({
-        type: "initGuestRegistrationHandler",
+        type: "pageStateHandler",
         data: {
           state: "READY",
           source: "UKD"
@@ -949,7 +949,7 @@ export default function Title() {
         onClick={() => {
           window.webkit.messageHandlers.resultGuestRegistrationHandler.postMessage(
             JSON.stringify({
-              state: "NOT_NEEDED",
+              state: "NOT_NEDEED",
               msaSessionId: "541c01f0-4f59-48c0-ab46-005126801802"
             })
           );
@@ -963,7 +963,7 @@ export default function Title() {
           window.webkit.messageHandlers.resultGuestRegistrationHandler.postMessage(
             JSON.stringify({
               state: "ERROR",
-              description: "541c01f0-4f59-48c0-ab46-005126801802"
+              description: "ошибка"
             })
           );
         }}
