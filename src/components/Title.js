@@ -949,7 +949,7 @@ export default function Title() {
         onClick={() => {
           window.webkit.messageHandlers.resultGuestRegistrationHandler.postMessage(
             JSON.stringify({
-              state: "NOT_NEDEED",
+              state: "NOT_NEEDED",
               msaSessionId: "541c01f0-4f59-48c0-ab46-005126801802"
             })
           );
@@ -1010,7 +1010,7 @@ export default function Title() {
           window.resultGuestRegistrationHandler.sendMessage(JSON.stringify({
             type: "resultGuestRegistrationHandler",
             data: {
-              state: "NOT_NEDEED",
+              state: "NOT_NEEDED",
               msaSessionId: "541c01f0-4f59-48c0-ab46-005126801802"
             }
           }));
